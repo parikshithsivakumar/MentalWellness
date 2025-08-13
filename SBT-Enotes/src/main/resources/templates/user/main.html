@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="user/base::layout(~{::section})"
+>
+  <head>
+    <meta charset="ISO-8859-1" />
+    <title>Dashboard</title>
+  </head>
+  <body>
+    <section>
+      <div class="ag-format-container">
+        <div class="ag-courses_box">
+          <div class="ag-courses_item">
+            <a th:href="@{/user/viewNotes/0}" class="ag-courses-item_link">
+              <div class="ag-courses-item_bg"></div>
+
+              <div class="ag-courses-item_title">Journal</div>
+
+              <div class="ag-courses-item_date-box">
+                Personal Self Reflection Space
+              </div>
+            </a>
+          </div>
+
+          <div class="ag-courses_item">
+            <a th:href="@{/user/breathbox}" class="ag-courses-item_link">
+              <div class="ag-courses-item_bg"></div>
+
+              <div class="ag-courses-item_title">Breathing Box</div>
+
+              <div class="ag-courses-item_date-box">
+                An effective tool for immediate stress relief
+              </div>
+            </a>
+          </div>
+
+          <div class="ag-courses_item">
+            <a th:href="@{/user/timer}" class="ag-courses-item_link">
+              <div class="ag-courses-item_bg"></div>
+
+              <div class="ag-courses-item_title">Meditation Timer</div>
+
+              <div class="ag-courses-item_date-box">
+                Track & elevate your practice with the meditation timer
+              </div>
+            </a>
+          </div>
+
+          <div class="ag-courses_item">
+            <a th:href="@{/wordle}" class="ag-courses-item_link">
+              <div class="ag-courses-item_bg"></div>
+
+              <div class="ag-courses-item_title">Wordle</div>
+
+              <div class="ag-courses-item_date-box">
+                Test your word skills with a wordle challenge
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

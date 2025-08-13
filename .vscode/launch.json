@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-SbtEnotesApplication<SBT-Enotes>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.enotes.SbtEnotesApplication",
+            "projectName": "SBT-Enotes",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

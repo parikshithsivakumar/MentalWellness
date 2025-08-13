@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="user/base::layout(~{::section})">
+<head>
+<meta charset="ISO-8859-1">
+<title>View Notes</title>
+</head>
+<body>
+	<section>
+		<div class="container mt-5">
+			<h1 class="text-center text-success"><span style="font-family:Poppins, sans-serif; color: #1a365d; font-weight: 600; font-size: 34px;">View Journal </span></h1>
+			<hr>
+			 <div th:if="${session.msg}"
+				 class="text-center"
+				role="alert">
+
+				<h4 th:text="${session.msg}"></h4>
+				<th:block th:text="${#session.removeAttribute('msg')}"></th:block>
+			</div> 
+
+			<div class="col-md-12 mt-3" th:each="n:${Notes}">
+				<div class="card paint-card" style="background-color:#d4d0d0 ; box-shadow: 0 0 15px -10px #2d3748; padding: 10px;">
+					<div class="card-body">
+						<div class="text-center">
+							<img alt="" th:src="@{/img/paper.jpg}"
+								style="width: 75px; height: 75px; border-radius: 5px;">
+						</div>
+
+						<h5 style="color: #1a365d;">[[${n.title}]]</h5>
+						
+						  <p style="color: #1a365d;">
+							[[${n.content}]] <br> <br> 
+							
+							
+
+						</p>
+						
+						<div class="text-center" >
+							<a th:href="@{'/user/editNotes/'+${n.id}}" class="btn  btn-sm ml-2" style="background-color:#1a365d;
+							color: #fff;"><i class="fas fa-pen-to-square"></i> Edit</a>
+							
+							 <a
+								th:href="@{'/user/deleteNotes/'+${n.id}}" class="btn  btn-sm ml-2" style="background-color:#1a365d;
+								color: #fff;"><i class="fas fa-trash"></i> Delete</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
+
+			<div class="row p-4">
+				<div class="col-md-4">Total Elements : [[${totalElement}]]</div>
+				<div class="col-md-6">
+					<nav aria-label="Page navigation example">
+						<ul class="pagination" >
+							
+							<li th:classappend="${pageNo==0} ? 'disabled':'' " class="page-item">
+							<a class="page-link" th:href="@{'/user/viewNotes/'+${pageNo-1} }"
+							
+								aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+							</a>
+							
+							</li>
+							
+							
+							<li th:each="i:${#numbers.sequence(1,totalPage)}" th:classappend="${pageNo+1==i}?'active':''" class="page-item" >
+							
+							<a th:href="@{'/user/viewNotes/' +${i-1} }" class="page-link" href="#" style="background-color: #1a365d;">[[${i}]]</a>
+							
+							</li>
+							
+							<li th:classapppend="${pageNo+1==totalPage} ? 'disabled' :  '' " class="page-item">
+							<a class="page-link" th:href="@{'/user/viewNotes/'+${pageNo+1}}"
+								aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+							</a>
+							</li>
+							
+						</ul>
+					</nav>
+				</div>
+			</div>
+
+		</div>
+
+	</section>
+</body>
+</html>

@@ -1,0 +1,301 @@
+package com.enotes.controller;
+
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
+
+import com.enotes.entity.Notes;
+import com.enotes.entity.UserDtls;
+import com.enotes.repository.NotesRepository;
+import com.enotes.repository.UserRepository;
+
+
+
+@Controller
+@SessionAttributes({ "questionIndex", "totalScore" })
+@RequestMapping("/user")
+public class UserController {
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private NotesRepository notesRepository;
+
+	@ModelAttribute
+	public void addCommnData(Principal p, Model m) {
+		String email = p.getName();
+		UserDtls user = userRepository.findByEmail(email);
+		m.addAttribute("user", user);
+	}
+
+	@GetMapping("/main")
+	public String home() {
+		return "user/main";
+	}
+
+
+
+	@GetMapping("/breathbox")
+	public String breathbox() {
+		return "user/BreathBox";
+	}
+
+	@GetMapping("/timer")
+	public String timer() {
+		return "user/timer";
+	}
+
+
+	@GetMapping("/addNotes")
+	public String addNotes() {
+		return "user/add_notes";
+	}
+	
+
+	
+
+	@GetMapping("/viewNotes/{page}")
+	public String viewNotes(@PathVariable int page, Model m, Principal p) {
+
+		String email = p.getName();
+		UserDtls user = userRepository.findByEmail(email);
+
+		Pageable pageable = PageRequest.of(page, 5, Sort.by("id").descending());
+		Page<Notes> notes = notesRepository.findyNotesByUser(user.getId(), pageable);
+
+		m.addAttribute("pageNo", page);
+		m.addAttribute("totalPage", notes.getTotalPages());
+		m.addAttribute("Notes", notes);
+		m.addAttribute("totalElement", notes.getTotalElements());
+
+		return "user/view_notes";
+	}
+
+	@GetMapping("/editNotes/{id}")
+	public String editNotes(@PathVariable int id, Model m) {
+
+		Optional<Notes> n = notesRepository.findById(id);
+		if (n != null) {
+			Notes notes = n.get();
+			m.addAttribute("notes", notes);
+		}
+
+		return "user/edit_notes";
+	}
+
+	@PostMapping("/updateNotes")
+	public String updateNotes(@ModelAttribute Notes notes, HttpSession session, Principal p) {
+		String email = p.getName();
+		UserDtls user = userRepository.findByEmail(email);
+
+		notes.setUserDtls(user);
+
+		Notes updateNotes = notesRepository.save(notes);
+
+		if (updateNotes != null) {
+			session.setAttribute("msg", "Notes Update Sucessfully");
+		} else {
+			session.setAttribute("msg", "Something wrong on server");
+		}
+
+		System.out.println(notes);
+
+		return "redirect:/user/viewNotes/0";
+	}
+
+	@GetMapping("/deleteNotes/{id}")
+	public String deleteNotes(@PathVariable int id,HttpSession session) {
+		
+		Optional<Notes> notes=notesRepository.findById(id);
+		if(notes!=null)
+		{
+			notesRepository.delete(notes.get());
+			session.setAttribute("msg", "Notes Delete Successfully");
+		}
+		
+		return "redirect:/user/viewNotes/0";
+	}
+
+	@GetMapping("/viewProfile")
+	public String viewProfile() {
+		return "user/view_profile";
+	}
+
+	@PostMapping("/saveNotes")
+	public String saveNotes(@ModelAttribute Notes notes, HttpSession session, Principal p) {
+		String email = p.getName();
+		UserDtls u = userRepository.findByEmail(email);
+		notes.setUserDtls(u);
+
+		Notes n = notesRepository.save(notes);
+
+		if (n != null) {
+			session.setAttribute("msg", "Notes Added Sucessfully");
+		} else {
+			session.setAttribute("msg", "Something wrong on server");
+		}
+
+		return "redirect:/user/addNotes";
+	}
+	
+	@PostMapping("/updateUser")
+	public String updateUser(@ModelAttribute UserDtls user,HttpSession session,Model m)
+	{
+		Optional<UserDtls> Olduser=userRepository.findById(user.getId());
+		
+		if(Olduser!=null)
+		{
+			user.setPassword(Olduser.get().getPassword());
+			user.setRole(Olduser.get().getRole());
+			user.setEmail(Olduser.get().getEmail());
+			
+			UserDtls updateUser=userRepository.save(user);
+			if(updateUser!=null)
+			{
+				m.addAttribute("user",updateUser);
+				session.setAttribute("msg", "Profile Update Sucessfully..");
+			}
+			
+		}
+		
+		
+		return "redirect:/user/viewProfile";
+	}
+
+	private static final List<String> questions = new ArrayList<>();
+
+    // Static block to initialize questions
+    static {
+        questions.add("How would you rate your overall mood today?");
+        questions.add("How well do you feel you have been managing stress recently?");
+		questions.add("On a scale from 1 to 10, how would you rate your current level of anxiety?");
+        questions.add("How many hours of sleep do you typically get per night?");
+        questions.add("How often do you engage in activities that you find enjoyable or relaxing?");
+        questions.add("Are you able to concentrate and focus on tasks easily?");
+        questions.add("How would you describe your current level of energy and motivation?");
+        questions.add("Do you have a support system (friends, family, etc.) that you can rely on?");
+        questions.add("How often do you experience feelings of loneliness?");
+        questions.add("Are you satisfied with your work-life balance?");
+        questions.add("How would you rate your ability to cope with life's challenges?");
+        questions.add("Do you engage in regular physical exercise?");
+        questions.add("How often do you take breaks or practice mindfulness during the day?");
+        questions.add("Are you comfortable expressing your thoughts and feelings to others?");
+        questions.add("How do you handle setbacks or disappointments?");
+    }
+
+    @GetMapping("/questionnaire")
+    public String showQuestionnaire(Model model) {
+        Integer questionIndex = (Integer) model.getAttribute("questionIndex");
+
+        // Check if questionIndex is null and initialize it with the default value (0 in this case)
+        if (questionIndex == null) {
+            questionIndex = 0;
+            model.addAttribute("questionIndex", questionIndex);
+        }
+
+        // Get the current question using the getQuestion method
+        String currentQuestion = getQuestion(questionIndex);
+
+        // Update the model attributes
+        model.addAttribute("currentQuestion", currentQuestion);
+
+        return "user/questionnaire";
+    }
+
+    @PostMapping("/questionnaire")
+    public String processAnswer(@RequestParam String answer, Model model) {
+        Integer questionIndex = (Integer) model.getAttribute("questionIndex");
+        Integer totalScore = (Integer) model.getAttribute("totalScore");
+
+        if (questionIndex == null) {
+            questionIndex = 0;
+            model.addAttribute("questionIndex", questionIndex);
+        }
+
+        if (totalScore == null) {
+            totalScore = 0;
+            model.addAttribute("totalScore", totalScore);
+        }
+
+        switch (answer) {
+            case "a":
+                totalScore += 5;
+                break;
+            case "b":
+                totalScore += 4;
+                break;
+            case "c":
+                totalScore += 3;
+                break;
+            case "d":
+                totalScore += 2;
+                break;
+            case "e":
+                totalScore += 1;
+                break;
+            default:
+                System.out.println("Invalid choice. Skipping question.");
+        }
+
+        questionIndex++;
+
+        if (questionIndex < questions.size()) {
+            model.addAttribute("questionIndex", questionIndex);
+            model.addAttribute("totalScore", totalScore);
+            return "redirect:/user/questionnaire";
+        } else {
+            return "redirect:/user/results";
+        }
+    }
+
+    @GetMapping("/results")
+    public String showResults(Model model, SessionStatus sessionStatus) {
+        int totalScore = (int) model.getAttribute("totalScore");
+        String resultMessage = determineResultMessage(totalScore);
+        model.addAttribute("resultMessage", resultMessage);
+
+        sessionStatus.setComplete();
+
+        return "user/results";
+    }
+
+    private String determineResultMessage(int totalScore) {
+        if (totalScore <= 50) {
+            return "Your mental well-being is in a good state. Keep it up!";
+        } else if (totalScore <= 70) {
+            return "Moderate mental stress detected. Consider taking breaks and managing stress.";
+        } else {
+            return "High mental stress identified. Seek support and take care of yourself.";
+        }
+    }
+
+    private static String getQuestion(int index) {
+        if (index >= 0 && index < questions.size()) {
+            return questions.get(index);
+        } else {
+            return "Invalid question index.";
+        }
+    }
+
+	
+}

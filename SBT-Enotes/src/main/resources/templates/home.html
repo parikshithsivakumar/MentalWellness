@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="base::layout(~{::section})">
+<head>
+<meta charset="ISO-8859-1">
+<title>About Us - Mental Wellness Website</title>
+</head>
+<body>
+	<section>
+		
+		
+		  <div class="about">
+			<div class="images-content">
+			  <img th:src="@{/img/left-image.webp}" alt="Left Image" class="left-image">
+			  <div class="text-content">
+				<h1>WELCOME TO WELLNEST</h1>
+				<p>At our Mental Wellness Hub, we're committed to nurturing your mental health just as much as 
+					your physical well-being. We understand the significance of a balanced mind in leading a 
+					fulfilling life. Here, we offer a safe space where you can explore, learn, and find the
+					support you need on your journey to mental wellness.</p>
+			  </div>
+			  <img th:src="@{/img/right-image1.jpeg}" alt="Right Image" class="right-image">
+			</div>
+		  </div>
+		  <div class="about">
+			<div class="images-content">
+			  <img th:src="@{/img/left-image2.jpg}" alt="Left Image" class="left-image">
+			  <div class="text-content">
+				<h1>Our Aim</h1>
+				<p>We aim to provide with multiple tools to aid in creating a safe space for the individual to self reflect.
+					The platform has many tools to help people with their mental health, like quiz, games, journaling, meditation timer and breathing exercises. 
+					These are all made to give users a complete way to take care of their mental wellness.
+				</p>
+			  </div>
+			  <img th:src="@{/img/right-image.jpg}" alt="Right Image" class="right-image">
+			</div>
+		  </div>
+		
+	</section>
+</body>
+</html>

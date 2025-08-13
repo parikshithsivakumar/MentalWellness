@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="user/base::layout(~{::section})">
+<head>
+<meta charset="ISO-8859-1">
+<title>Add Notes</title>
+</head>
+<body>
+	<section>
+		<div class="container-fluid p-3 mt-5">
+			<div class="col-md-10 offset-md-1">
+				<div class="card paint-card" style="background-color:#d4d0d0 ; box-shadow: 0 0 15px -10px #2d3748; padding: 10px;">
+					<h1 class="text-center text-success"><span style="font-family:Poppins, sans-serif; color: #1a365d; font-weight: 600; font-size: 34px;">Add Journal </span></h1>
+					<hr>
+					<div th:if="${session.msg}" class="text-center" role="alert">
+
+						<h4 class="text-success" th:text="${session.msg}"></h4>
+						<th:block th:text="${#session.removeAttribute('msg')}"></th:block>
+					</div>
+					<div class="card-body">
+						<form th:action="@{/user/saveNotes}" method="post">
+							<div class="form-group" style="color: #1a365d;">
+								<label><b>Enter Title</b></label> <input type="text"
+									class="form-control" placeholder="Enter Notes Title" name="title" required style="border: 1px solid #d4d0d0;">
+							</div> <br>
+							<div class="form-group" style="color: #1a365d;">
+								<label><b>Enter Description</b></label>
+								<textarea rows="12" cols="" name="content" placeholder="Notes Description" class="form-control" required style="border: 1px solid #d4d0d0;"></textarea>
+							</div>
+							<div class="text-center mt-3">
+								<button>Submit <i class="fas fa-floppy-disk"></i></button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>

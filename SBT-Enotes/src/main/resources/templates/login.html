@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="base::layout(~{::section})">
+<head>
+<meta charset="ISO-8859-1">
+<title>Login Page</title>
+</head>
+<body>
+	<section>
+	<div class="backimg">
+		<div class="container p-5 mt-5">
+			<div class="row">
+				<div class="col-md-6 offset-md-3">
+					<div class="card paint-card">
+						<div class="card-body">
+							<h1 class="form-signin-heading text-center"><span style="color: #1a365d; font-family: Poppins;font-weight: 600;"> Login</span></h1>
+							<hr>
+							<form class="form-signin" method="post" th:action="@{/login}">
+
+ 
+								 <div th:if="${param.error}" class="alert alert-danger">
+									Invalid username & Password</div>
+
+								<div th:if="${param.logout}" class="alert alert-success">
+									Logout Sucessfully</div> 
+
+								<div class="form-group">
+									<label><b>Email Address</b></label>
+									<input type="text" id="username"
+										name="username" class="form-control mt-3" placeholder="Enter Email Address" required autofocus>
+								</div>
+								<div class="form-group mt-3">
+									<label><b>Password</label></b> <input type="password" id="password"
+										name="password" class="form-control mt-3" placeholder="Enter Password" required>
+								</div>
+								<div class="text-center mt-3" style="display: flex; flex-direction: row; align-items: center;"><button class="btn btn-light col-md-12 mt-3 text-white" style="width: 100px; background-color: #89CFAD; border-color: #07302c;" type="submit">Sign
+									in</button>
+									<a href="/signup" class="btn btn-light mt-3 text-white" style="width: 100px; background-color: #f34646; border-color: #07302c;">Sign Up</a></div>
+								
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+	</section>
+</body>
+</html>

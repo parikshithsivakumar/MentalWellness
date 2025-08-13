@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="base::layout(~{::section})">
+<head>
+<meta charset="ISO-8859-1">
+<title>Contact Us</title>
+
+</head>
+<body>
+	<section>
+		<div class="container text-center" style="margin-top: 50px"
+			id="contact">
+			<h1 class="text-center font-weight-bold"
+				style="font-family: Monotype Corsiva; color: #EE1D29">Contact
+				Us</h1>
+			<br> <br> <br>
+			<div class="row mt-5">
+				<div class="col-lg-3 col-sm-6 mydivstyle">
+					<h4>
+						<i class="fas fa-phone-square"></i> Contact
+					</h4>
+					<p class="mt-3 text-danger font-weight-bold">
+						<a class="contactlink" href="tel:+91 8602768216">+91
+							1234567890</a>
+					</p>
+				</div>
+				<div class="col-lg-3 col-sm-6 mydivstyle">
+					<h4>
+						<i class="fas fa-envelope"></i> Send Mail
+					</h4>
+					<p class="mt-3 text-danger font-weight-bold">
+						<a class="contactlink" href="mailto:pankajpanjwani42@gmail.com">abc@gmail.com</a>
+					</p>
+				</div>
+				<div class="col-lg-3 col-sm-6 mydivstyle">
+					<h4>
+						<i class="fas fa-address-card"></i> Office Address
+					</h4>
+					<p class="mt-3 text-danger font-weight-bold">
+						<a class="contactlink"
+							href="http://maps.google.com/maps?q=indrapuri+bhopal">Indrapuri
+							Bhopal</a>
+					</p>
+				</div>
+				<div class="col-lg-3 col-sm-6 mydivstyle">
+					<h4>
+						<i class="far fa-clock"> </i> Office Hours
+					</h4>
+					<p class="mt-3 text-danger font-weight-bold">9:00 AM to 7:00 PM</p>
+				</div>
+			</div>
+		</div>
+
+		<footer class="container mt-5 text-center">
+			<p style="font-size: 30pt; color: red; font-weight: bold">
+				Copyright &copy;
+				<script>
+					document.write(new Date().getFullYear());
+				</script>
+				All Right Reserved <span style="color: brown">|</span><span
+					style="color: #006400">This website is made with <i
+					class="fas fa-heart icon-heart text-warning"> by </i></span> <a
+					class="glow" href="#" target="_blank">Pankaj Panjwani</a>
+			</p>
+		</footer>
+	</section>
+</body>
+</html>

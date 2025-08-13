@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="user/base::layout(~{::section})"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wellbeing Results</title>
+  </head>
+  <body>
+    <section>
+      <div class="form_datas">
+        <div class="form_headings">
+          <h1>Wellbeing Result</h1>
+        </div>
+      <p th:text="${resultMessage} " style="color: aliceblue;"></p>
+      </div>
+  </body>
+</html>

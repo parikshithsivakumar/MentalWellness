@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="user/base::layout(~{::section})">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<section>
+		<div class="container p-5">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="card paint-card">
+						<div class="card-body" style="background-color:#d4d0d0">
+							<form th:action="@{/saveUser}" method="post">
+
+								<p class="fs-4 text-center text-succes" style="font-family: 'Monotype Corsiva';color: #1a365d;"><b>View Profile</b></p>
+								<hr>
+								<div class="form-group mt-2">
+									<label style="color: #1a365d;"><b>Name</b></label> <input type="text" name="name"
+										th:value="${user.name}" readonly class="form-control"
+										required="required">
+
+								</div>
+
+								<div class="form-group mt-2">
+									<label style="color: #1a365d; "> <b>Email</b></label> <input type="email" name="email"
+										th:value="${user.email}" readonly class="form-control"
+										required="required">
+								</div>
+
+								<div class="form-group mt-2">
+								    <label style="color: #1a365d;"> <b>About</b></label>
+									<textarea rows="3" cols="" class="form-control" name="about"
+										th:value="${user.about}" readonly placeholder="Enter About">[[${user.about}]]</textarea>
+								</div>
+
+
+
+							</form>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-6">
+					<div class="card paint-card">
+						<div class="card-body" style="background-color:#d4d0d0">
+							<form th:action="@{/user/updateUser}" method="post">
+
+								<p class="fs-4 text-center text-dange" style="font-family: 'Monotype Corsiva';color: #1a365d;"><b>Edit Profile</b></p>
+								<hr>
+								<div th:if="${session.msg}" class="text-center" role="alert">
+
+									<h4 class="text-success" th:text="${session.msg}"></h4>
+									<th:block th:text="${#session.removeAttribute('msg')}"></th:block>
+								</div>
+
+								<div class="form-group mt-2">
+									<label style="color: #1a365d;font-weight: 600;">Enter Name</label> <input type="text" name="name"
+										th:value="${user.name}" class="form-control"
+										required="required">
+
+								</div>
+
+								<div class="form-group mt-2">
+									<label style="color: #1a365d;font-weight: 600;">Enter Email</label> <input type="email" name="email"
+										th:value="${user.email}" readonly class="form-control"
+										required="required">
+								</div>
+
+
+								<div class="form-group mt-2">
+									<label style="color: #1a365d;"> <b>About</b></label>
+									<textarea rows="3" cols="" class="form-control" name="about"
+										placeholder="Enter About">[[${user.about}]]</textarea>
+								</div>
+								<input type="hidden" name="id" th:value="${user.id}">
+
+
+								<div class="text-center mt-3" >
+									<button class="btn bg-primary text-white" >Update <i class="fas fa-save"></i></button>
+									<button type="reset" class="btn btn-danger text-white">Reset <i class="fas fa-rectangle-xmark"></i></button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</section>
+</body>
+</html>

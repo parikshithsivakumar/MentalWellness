@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="user/base::layout(~{::section})"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wellbeing Questionnaire</title>
+</head>
+<body>
+    
+    <section>
+        <div class = "form_datas">
+            <div class="form_headings">
+                <h1>Wellbeing</h1>
+              </div>
+              <form th:action="@{/user/questionnaire}" th:method="post">
+                <div class="form_inputs">
+                    <h2 style="font-size: 45px;"><label th:text="${currentQuestion}"></label></h2>
+                    <label>Choose an option:</label>
+                    <div class="two">
+                      <select name="answer">
+                        <option value="a">Very Positive</option>
+            <option value="b">Positive</option>
+            <option value="c">Neutral</option>
+            <option value="d">Negative</option>
+            <option value="e">Very Negative</option>
+                      </select>
+                    </div>
+                    <button class="btn" type="submit">
+                      Next
+                    </button>
+                  </div>
+                </form>
+        </div>
+    </section>
+    
+</body>
+</html>
