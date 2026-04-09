@@ -1,67 +1,346 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-	th:replace="base::layout(~{::section})">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Signup Page</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mental Wellness - Sign Up</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		html, body {
+			height: 100%;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+			background: linear-gradient(135deg, #cfe7f3 0%, #d4f1d4 100%);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			min-height: 100vh;
+			padding: 20px;
+		}
+
+		.signup-container {
+			width: 100%;
+			max-width: 450px;
+			background: white;
+			border-radius: 16px;
+			box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+			padding: 48px 40px;
+			animation: slideUp 0.5s ease-out;
+		}
+
+		@keyframes slideUp {
+			from {
+				opacity: 0;
+				transform: translateY(30px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		.form-header {
+			text-align: center;
+			margin-bottom: 32px;
+		}
+
+		.form-title {
+			font-size: 28px;
+			font-weight: 700;
+			color: #1f2937;
+			margin-bottom: 8px;
+			letter-spacing: -0.5px;
+		}
+
+		.form-subtitle {
+			font-size: 15px;
+			color: #6b7280;
+			font-weight: 400;
+		}
+
+		/* Alerts */
+		.alert {
+			padding: 12px 14px;
+			border-radius: 8px;
+			margin-bottom: 20px;
+			font-size: 13px;
+			font-weight: 500;
+			animation: slideDown 0.3s ease-out;
+			border-left: 4px solid;
+		}
+
+		@keyframes slideDown {
+			from {
+				opacity: 0;
+				transform: translateY(-10px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		.alert-danger {
+			background-color: #fee2e2;
+			color: #7f1d1d;
+			border-left-color: #dc2626;
+		}
+
+		.alert-success {
+			background-color: #dcfce7;
+			color: #065f46;
+			border-left-color: #10b981;
+		}
+
+		/* Form Elements */
+		.form-group {
+			margin-bottom: 18px;
+		}
+
+		.form-label {
+			display: block;
+			font-size: 13px;
+			font-weight: 600;
+			color: #1f2937;
+			margin-bottom: 6px;
+		}
+
+		.form-control {
+			width: 100%;
+			padding: 11px 14px;
+			font-size: 14px;
+			border: 1.5px solid #e5e7eb;
+			border-radius: 8px;
+			background: #f9fafb;
+			color: #1f2937;
+			transition: all 0.3s ease;
+			font-family: inherit;
+		}
+
+		.form-control::placeholder {
+			color: #9ca3af;
+		}
+
+		.form-control:focus {
+			outline: none;
+			border-color: #3b82f6;
+			background: white;
+			box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+		}
+
+		textarea.form-control {
+			resize: vertical;
+			min-height: 90px;
+		}
+
+		/* Buttons */
+		.btn-submit {
+			width: 100%;
+			padding: 13px 20px;
+			font-size: 15px;
+			font-weight: 700;
+			border: none;
+			border-radius: 8px;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			background: linear-gradient(135deg, #14b8a6 0%, #10b981 100%);
+			color: white;
+			margin-top: 4px;
+			margin-bottom: 12px;
+		}
+
+		.btn-submit:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 10px 25px rgba(20, 184, 166, 0.3);
+		}
+
+		.btn-submit:active {
+			transform: translateY(0);
+		}
+
+		.btn-submit:disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
+		}
+
+		.btn-reset {
+			width: 100%;
+			padding: 13px 20px;
+			font-size: 15px;
+			font-weight: 700;
+			border: 1.5px solid #6b7280;
+			border-radius: 8px;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			background: #6b7280;
+			color: white;
+			margin-bottom: 16px;
+		}
+
+		.btn-reset:hover {
+			background: #4b5563;
+			transform: translateY(-2px);
+			box-shadow: 0 10px 25px rgba(107, 114, 128, 0.3);
+		}
+
+		/* Sign In Link */
+		.signin-link {
+			text-align: center;
+			font-size: 14px;
+			color: #6b7280;
+		}
+
+		.signin-link a {
+			color: #14b8a6;
+			text-decoration: none;
+			font-weight: 600;
+			transition: color 0.2s ease;
+		}
+
+		.signin-link a:hover {
+			color: #0d9488;
+			text-decoration: underline;
+		}
+
+		/* Responsive Design */
+		@media (max-width: 480px) {
+			.signup-container {
+				padding: 32px 24px;
+			}
+
+			.form-title {
+				font-size: 24px;
+			}
+
+			.form-subtitle {
+				font-size: 14px;
+			}
+
+			.form-control {
+				padding: 10px 12px;
+				font-size: 13px;
+			}
+
+			.btn-submit, .btn-reset {
+				padding: 12px 16px;
+				font-size: 14px;
+			}
+		}
+
+		@media (max-width: 360px) {
+			.signup-container {
+				padding: 24px 20px;
+			}
+
+			.form-header {
+				margin-bottom: 24px;
+			}
+
+			.form-title {
+				font-size: 20px;
+			}
+
+			.form-label {
+				font-size: 12px;
+			}
+
+			.form-control {
+				padding: 9px 11px;
+				font-size: 13px;
+			}
+		}
+	</style>
 </head>
 <body>
-	<section>
-	<div class="backimg">
-		<div class="container mt-5">
-		<div class="card-shadow">
-			<div class="row">
-				<div class="col-md-6 offset-md-3">
-					<div class="card mt-2 paint-card">
-						<h1 class="text-center text-success"><span style="color: #1a365d; font-family: Poppins;font-weight: 600;">Register Here</span></h1>
-						<hr>
-						<!--alert message  -->
-						 <div th:if="${session.msg}" class="text-center">
-
-							<h4 class="text-success" th:text="${session.msg}"></h4>
-							<th:block th:text="${#session.removeAttribute('msg')}"></th:block>
-						</div> 
-
-						<!-- End alert message  -->
-
-						<div class="card-body">
-							<form th:action="@{/saveUser}" method="POST">
-
-								<div class="form-group mt-2">
-									<label><b>Enter Name</b></label> <input type="text" name="name"
-										class="form-control" placeholder="Enter Full Name" required="required">
-								</div>
-
-								<div class="form-group mt-2">
-									<label><b>Enter Email Address</b></label> <input type="email" name="email"
-										class="form-control" placeholder="Enter Email Address" required="required">
-								</div>
-
-								<div class="form-group mt-2">
-									<label><b>Enter Password</b></label> <input type="password"
-										name="password" class="form-control" placeholder="Enter Password" required="required">
-								</div>
-
-								<div class="form-group mt-2">
-								<label><b>About</b></label>
-									<textarea rows="3" cols="" class="form-control" name="about"
-										placeholder="Enter About"></textarea>
-								</div>
-
-								<div class="text-center mt-3" style="display: flex; flex-direction: row; align-items: center;">
-									<button class="btn bg-primary text-white" style="width: 125px; margin-right: 10px; background-color: #89CFAD">Submit</button>
-									<button type="reset" class="btn btn-danger text-white" style="width: 125px; background-color: #f34646">Reset</button>
-								</div>
-
-							</form>
-						</div>
-					</div>
-
-				</div>
-			</div>
-			</div>
+	<div class="signup-container">
+		<div class="form-header">
+			<h1 class="form-title">Join Our Community</h1>
+			<p class="form-subtitle">Start your mental wellness journey today</p>
 		</div>
-		</div>
-	</section>
+
+		<form th:action="@{/saveUser}" method="POST">
+			<!-- Success Message -->
+			<div th:if="${session.msg}" class="alert alert-success" role="alert">
+				<strong>Registration Successful!</strong> 
+				<span th:text="${session.msg}"></span>
+				<th:block th:text="${#session.removeAttribute('msg')}"></th:block>
+			</div>
+
+			<!-- Full Name Input -->
+			<div class="form-group">
+				<label for="name" class="form-label">Full Name</label>
+				<input 
+					type="text" 
+					id="name"
+					name="name"
+					class="form-control" 
+					placeholder="John Doe" 
+					required
+					aria-label="Full Name">
+			</div>
+
+			<!-- Email Address Input -->
+			<div class="form-group">
+				<label for="email" class="form-label">Email Address</label>
+				<input 
+					type="email" 
+					id="email"
+					name="email"
+					class="form-control" 
+					placeholder="your@email.com" 
+					required
+					aria-label="Email Address">
+			</div>
+
+			<!-- Password Input -->
+			<div class="form-group">
+				<label for="password" class="form-label">Password</label>
+				<input 
+					type="password"
+					id="password"
+					name="password" 
+					class="form-control" 
+					placeholder="Create a strong password" 
+					required
+					aria-label="Password">
+			</div>
+
+			<!-- About Textarea -->
+			<div class="form-group">
+				<label for="about" class="form-label">About You</label>
+				<textarea 
+					id="about"
+					name="about"
+					class="form-control"
+					placeholder="Tell us about your wellness goals and interests..."
+					aria-label="About You"></textarea>
+			</div>
+
+			<!-- Submit Button -->
+			<button 
+				class="btn-submit" 
+				type="submit"
+				aria-label="Create account">
+				✨ Create Account
+			</button>
+
+			<!-- Reset Button -->
+			<button 
+				class="btn-reset" 
+				type="reset"
+				aria-label="Clear form">
+				📋 Clear
+			</button>
+
+			<!-- Sign In Link -->
+			<div class="signin-link">
+				Already have an account? <a href="/login">Sign In →</a>
+			</div>
+		</form>
+	</div>
 </body>
 </html>
