@@ -59,7 +59,7 @@ public class UserController {
 
 	@GetMapping("/timer")
 	public String timer() {
-		return "user/timer";
+		return "user/Timer";
 	}
 
 
