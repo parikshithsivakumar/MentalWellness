@@ -1,7 +1,7 @@
 package com.enotes.web;
 
 import com.enotes.service.WordleService;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,11 +17,14 @@ import java.util.stream.Collectors;
 
 @Controller
 @Scope("session")
-@AllArgsConstructor
 public class WebController {
-    private final WordleService wordleService;
+    @Autowired
+    private WordleService wordleService;
 
     private List<String> attempts = new ArrayList<>();
+    
+    public WebController() {
+    }
 
     @GetMapping("/guessMVC")
     public String guess(Model model) {

@@ -1,16 +1,12 @@
 package com.enotes.repository;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import java.util.List;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 import com.enotes.entity.Notes;
 
-public interface NotesRepository extends JpaRepository<Notes, Integer>{
-	
-	@Query("from Notes as n where n.userDtls.id=:uid")
-	Page<Notes> findyNotesByUser(@Param("uid") int uid,Pageable p);
-
+public interface NotesRepository extends MongoRepository<Notes, String> {
+	@Query("{userDtls._id: ?0}")
+	List<Notes> findByUserDtlsId(String userId);
 }

@@ -2,16 +2,13 @@ package com.enotes.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -76,30 +73,37 @@ public class UserController {
 
 	@GetMapping("/viewNotes/{page}")
 	public String viewNotes(@PathVariable int page, Model m, Principal p) {
-
 		String email = p.getName();
 		UserDtls user = userRepository.findByEmail(email);
 
-		Pageable pageable = PageRequest.of(page, 5, Sort.by("id").descending());
-		Page<Notes> notes = notesRepository.findyNotesByUser(user.getId(), pageable);
+		List<Notes> allNotes = notesRepository.findByUserDtlsId(user.getId());
+		
+		// Reverse to show latest first
+		Collections.reverse(allNotes);
+		
+		// Simple pagination
+		int pageSize = 5;
+		int totalPages = (int) Math.ceil((double) allNotes.size() / pageSize);
+		int start = page * pageSize;
+		int end = Math.min(start + pageSize, allNotes.size());
+		
+		List<Notes> pageNotes = allNotes.subList(start, end);
 
 		m.addAttribute("pageNo", page);
-		m.addAttribute("totalPage", notes.getTotalPages());
-		m.addAttribute("Notes", notes);
-		m.addAttribute("totalElement", notes.getTotalElements());
+		m.addAttribute("totalPage", totalPages);
+		m.addAttribute("Notes", pageNotes);
+		m.addAttribute("totalElement", allNotes.size());
 
 		return "user/view_notes";
 	}
 
 	@GetMapping("/editNotes/{id}")
-	public String editNotes(@PathVariable int id, Model m) {
-
+	public String editNotes(@PathVariable String id, Model m) {
 		Optional<Notes> n = notesRepository.findById(id);
-		if (n != null) {
+		if (n.isPresent()) {
 			Notes notes = n.get();
 			m.addAttribute("notes", notes);
 		}
-
 		return "user/edit_notes";
 	}
 
@@ -124,15 +128,12 @@ public class UserController {
 	}
 
 	@GetMapping("/deleteNotes/{id}")
-	public String deleteNotes(@PathVariable int id,HttpSession session) {
-		
-		Optional<Notes> notes=notesRepository.findById(id);
-		if(notes!=null)
-		{
+	public String deleteNotes(@PathVariable String id, HttpSession session) {
+		Optional<Notes> notes = notesRepository.findById(id);
+		if (notes.isPresent()) {
 			notesRepository.delete(notes.get());
 			session.setAttribute("msg", "Notes Delete Successfully");
 		}
-		
 		return "redirect:/user/viewNotes/0";
 	}
 
@@ -161,13 +162,13 @@ public class UserController {
 	@PostMapping("/updateUser")
 	public String updateUser(@ModelAttribute UserDtls user,HttpSession session,Model m)
 	{
-		Optional<UserDtls> Olduser=userRepository.findById(user.getId());
+		Optional<UserDtls> oldUser=userRepository.findById(user.getId());
 		
-		if(Olduser!=null)
+		if(oldUser.isPresent())
 		{
-			user.setPassword(Olduser.get().getPassword());
-			user.setRole(Olduser.get().getRole());
-			user.setEmail(Olduser.get().getEmail());
+			user.setPassword(oldUser.get().getPassword());
+			user.setRole(oldUser.get().getRole());
+			user.setEmail(oldUser.get().getEmail());
 			
 			UserDtls updateUser=userRepository.save(user);
 			if(updateUser!=null)
