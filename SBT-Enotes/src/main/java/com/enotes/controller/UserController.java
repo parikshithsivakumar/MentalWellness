@@ -22,8 +22,10 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import com.enotes.entity.Notes;
 import com.enotes.entity.UserDtls;
+import com.enotes.entity.Questionnaire;
 import com.enotes.repository.NotesRepository;
 import com.enotes.repository.UserRepository;
+import com.enotes.repository.QuestionnaireRepository;
 
 
 
@@ -37,6 +39,9 @@ public class UserController {
 
 	@Autowired
 	private NotesRepository notesRepository;
+	
+	@Autowired
+	private QuestionnaireRepository questionnaireRepository;
 
 	@ModelAttribute
 	public void addCommnData(Principal p, Model m) {
@@ -46,7 +51,24 @@ public class UserController {
 	}
 
 	@GetMapping("/main")
-	public String home() {
+	public String home(Model m, Principal p) {
+		String email = p.getName();
+		UserDtls user = userRepository.findByEmail(email);
+		
+		// Get note count
+		List<Notes> allNotes = notesRepository.findByUserDtlsId(user.getId());
+		int noteCount = allNotes.size();
+		
+		// Get latest wellness score
+		Optional<Questionnaire> latestQuestionnaire = questionnaireRepository.findFirstByUserDtlsIdOrderByCreatedAtDesc(user.getId());
+		int wellnessScore = 0;
+		if (latestQuestionnaire.isPresent()) {
+			wellnessScore = latestQuestionnaire.get().getWellnessScore();
+		}
+		
+		m.addAttribute("noteCount", noteCount);
+		m.addAttribute("wellnessScore", wellnessScore);
+		
 		return "user/main";
 	}
 
@@ -138,7 +160,24 @@ public class UserController {
 	}
 
 	@GetMapping("/viewProfile")
-	public String viewProfile() {
+	public String viewProfile(Model m, Principal p) {
+		String email = p.getName();
+		UserDtls user = userRepository.findByEmail(email);
+		
+		// Get note count
+		List<Notes> allNotes = notesRepository.findByUserDtlsId(user.getId());
+		int noteCount = allNotes.size();
+		
+		// Get latest wellness score
+		Optional<Questionnaire> latestQuestionnaire = questionnaireRepository.findFirstByUserDtlsIdOrderByCreatedAtDesc(user.getId());
+		int wellnessScore = 0;
+		if (latestQuestionnaire.isPresent()) {
+			wellnessScore = latestQuestionnaire.get().getWellnessScore();
+		}
+		
+		m.addAttribute("noteCount", noteCount);
+		m.addAttribute("wellnessScore", wellnessScore);
+		
 		return "user/view_profile";
 	}
 
@@ -212,19 +251,27 @@ public class UserController {
         if (questionIndex == null) {
             questionIndex = 0;
             model.addAttribute("questionIndex", questionIndex);
+            model.addAttribute("totalScore", 0);
         }
 
         // Get the current question using the getQuestion method
         String currentQuestion = getQuestion(questionIndex);
-
+        
+        // Calculate progress
+        int totalQuestions = questions.size();
+        int progressPercentage = ((questionIndex + 1) * 100) / totalQuestions;
+        
         // Update the model attributes
         model.addAttribute("currentQuestion", currentQuestion);
+        model.addAttribute("questionNumber", questionIndex + 1);
+        model.addAttribute("totalQuestions", totalQuestions);
+        model.addAttribute("progressPercentage", progressPercentage);
 
         return "user/questionnaire";
     }
 
     @PostMapping("/questionnaire")
-    public String processAnswer(@RequestParam String answer, Model model) {
+    public String processAnswer(@RequestParam int answer, Model model, Principal p) {
         Integer questionIndex = (Integer) model.getAttribute("questionIndex");
         Integer totalScore = (Integer) model.getAttribute("totalScore");
 
@@ -238,24 +285,11 @@ public class UserController {
             model.addAttribute("totalScore", totalScore);
         }
 
-        switch (answer) {
-            case "a":
-                totalScore += 5;
-                break;
-            case "b":
-                totalScore += 4;
-                break;
-            case "c":
-                totalScore += 3;
-                break;
-            case "d":
-                totalScore += 2;
-                break;
-            case "e":
-                totalScore += 1;
-                break;
-            default:
-                System.out.println("Invalid choice. Skipping question.");
+        // Accept numeric answers (1-5)
+        if (answer >= 1 && answer <= 5) {
+            totalScore += answer;
+        } else {
+            System.out.println("Invalid answer value. Answer must be between 1 and 5.");
         }
 
         questionIndex++;
@@ -265,15 +299,52 @@ public class UserController {
             model.addAttribute("totalScore", totalScore);
             return "redirect:/user/questionnaire";
         } else {
+            // Calculate wellness score: (totalScore / (numberOfQuestions * 5)) * 100, then invert to get wellness score
+            int numberOfQuestions = questions.size();
+            int maxPossibleScore = numberOfQuestions * 5;
+            int stressLevel = (totalScore * 100) / maxPossibleScore; // Lower is better (stress level)
+            int wellnessScore = 100 - stressLevel; // Wellness is inverse of stress
+            
+            // Save questionnaire to MongoDB
+            String email = p.getName();
+            UserDtls user = userRepository.findByEmail(email);
+            
+            String assessment = determineResultMessage(totalScore);
+            
+            Questionnaire questionnaire = new Questionnaire(user, totalScore, wellnessScore, assessment);
+            questionnaireRepository.save(questionnaire);
+            
+            // Store in model for results page
+            model.addAttribute("totalScore", totalScore);
+            model.addAttribute("wellnessScore", wellnessScore);
+            
             return "redirect:/user/results";
         }
     }
 
     @GetMapping("/results")
-    public String showResults(Model model, SessionStatus sessionStatus) {
-        int totalScore = (int) model.getAttribute("totalScore");
+    public String showResults(Model model, SessionStatus sessionStatus, Principal p) {
+        Integer totalScore = (Integer) model.getAttribute("totalScore");
+        Integer wellnessScore = (Integer) model.getAttribute("wellnessScore");
+        
+        // If not in model, try to get from database
+        if (totalScore == null || wellnessScore == null) {
+            String email = p.getName();
+            UserDtls user = userRepository.findByEmail(email);
+            Optional<Questionnaire> latestResult = questionnaireRepository.findFirstByUserDtlsIdOrderByCreatedAtDesc(user.getId());
+            
+            if (latestResult.isPresent()) {
+                Questionnaire questionnaire = latestResult.get();
+                totalScore = questionnaire.getTotalScore();
+                wellnessScore = questionnaire.getWellnessScore();
+                model.addAttribute("totalScore", totalScore);
+                model.addAttribute("wellnessScore", wellnessScore);
+            }
+        }
+        
         String resultMessage = determineResultMessage(totalScore);
         model.addAttribute("resultMessage", resultMessage);
+        model.addAttribute("wellnessScore", wellnessScore);
 
         sessionStatus.setComplete();
 
@@ -281,12 +352,18 @@ public class UserController {
     }
 
     private String determineResultMessage(int totalScore) {
-        if (totalScore <= 50) {
-            return "Your mental well-being is in a good state. Keep it up!";
-        } else if (totalScore <= 70) {
-            return "Moderate mental stress detected. Consider taking breaks and managing stress.";
+        int numberOfQuestions = questions.size();
+        int maxScore = numberOfQuestions * 5;
+        int avgScore = totalScore / numberOfQuestions;
+        
+        if (avgScore <= 2) {
+            return "Your mental well-being is in an excellent state. You're managing stress very well!";
+        } else if (avgScore <= 3) {
+            return "Your mental health is good overall. Keep up the positive practices!";
+        } else if (avgScore <= 4) {
+            return "Moderate stress detected. Consider taking more time for relaxation and self-care.";
         } else {
-            return "High mental stress identified. Seek support and take care of yourself.";
+            return "High stress levels identified. Please consider seeking support and implementing stress management techniques.";
         }
     }
 

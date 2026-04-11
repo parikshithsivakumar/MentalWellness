@@ -1,66 +1,94 @@
 <!DOCTYPE html>
-<html
-  lang="en"
-  xmlns:th="http://www.thymeleaf.org"
-  th:replace="user/base::layout(~{::section})"
->
-  <head>
-    <meta charset="ISO-8859-1" />
-    <title>Dashboard</title>
-  </head>
-  <body>
-    <section>
-      <div class="ag-format-container">
-        <div class="ag-courses_box">
-          <div class="ag-courses_item">
-            <a th:href="@{/user/viewNotes/0}" class="ag-courses-item_link">
-              <div class="ag-courses-item_bg"></div>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="user/base::layout(~{::section})">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard</title>
+</head>
+<body>
+	<section>
+		<div class="dashboard-container">
+			<h1 class="dashboard-title">Dashboard</h1>
 
-              <div class="ag-courses-item_title">Journal</div>
+			<!-- Statistics Cards -->
+			<div class="stats-wrapper">
+				<!-- Notes Card -->
+				<div class="stat-box blue">
+					<div class="stat-icon">
+						<i class="fas fa-sticky-note"></i>
+					</div>
+					<div class="stat-label">Notes</div>
+					<div class="stat-value" th:text="${noteCount}">0</div>
+				</div>
 
-              <div class="ag-courses-item_date-box">
-                Personal Self Reflection Space
-              </div>
-            </a>
-          </div>
+				<!-- Wellness Score Card -->
+				<div class="stat-box green">
+					<div class="stat-icon">
+						<i class="fas fa-heartbeat"></i>
+					</div>
+					<div class="stat-label">Wellness Score</div>
+					<div class="stat-value" th:text="${wellnessScore}">0</div>
+				</div>
 
-          <div class="ag-courses_item">
-            <a th:href="@{/user/breathbox}" class="ag-courses-item_link">
-              <div class="ag-courses-item_bg"></div>
+				<!-- Streak Card -->
+				<div class="stat-box purple">
+					<div class="stat-icon">
+						<i class="fas fa-fire"></i>
+					</div>
+					<div class="stat-label">Streak</div>
+					<div class="stat-value">0 days</div>
+				</div>
+			</div>
 
-              <div class="ag-courses-item_title">Breathing Box</div>
+			<!-- Features Section -->
+			<h2 class="features-section-title">Features</h2>
 
-              <div class="ag-courses-item_date-box">
-                An effective tool for immediate stress relief
-              </div>
-            </a>
-          </div>
+			<div class="features-wrapper">
+				<!-- Notes Feature -->
+				<a th:href="@{/user/viewNotes/0}" class="feature-card-link">
+					<div class="feature-card-top">
+						<i class="fas fa-book" style="color: #3b82f6;"></i>
+					</div>
+					<div class="feature-card-bottom">
+						<div class="feature-card-title">Notes</div>
+						<div class="feature-card-description">Personal self-reflection space for your thoughts and journals.</div>
+					</div>
+				</a>
 
-          <div class="ag-courses_item">
-            <a th:href="@{/user/timer}" class="ag-courses-item_link">
-              <div class="ag-courses-item_bg"></div>
+				<!-- Breathing Box Feature -->
+				<a th:href="@{/user/breathbox}" class="feature-card-link">
+					<div class="feature-card-top">
+						<i class="fas fa-spa" style="color: #10b981;"></i>
+					</div>
+					<div class="feature-card-bottom">
+						<div class="feature-card-title">Breathing Box</div>
+						<div class="feature-card-description">An effective tool for immediate stress relief and relaxation.</div>
+					</div>
+				</a>
 
-              <div class="ag-courses-item_title">Meditation Timer</div>
+				<!-- Meditation Timer Feature -->
+				<a th:href="@{/user/timer}" class="feature-card-link">
+					<div class="feature-card-top">
+						<i class="fas fa-hourglass-start" style="color: #8b5cf6;"></i>
+					</div>
+					<div class="feature-card-bottom">
+						<div class="feature-card-title">Meditation Timer</div>
+						<div class="feature-card-description">Track and elevate your practice with guided meditation sessions.</div>
+					</div>
+				</a>
 
-              <div class="ag-courses-item_date-box">
-                Track & elevate your practice with the meditation timer
-              </div>
-            </a>
-          </div>
-
-          <div class="ag-courses_item">
-            <a th:href="@{/wordle}" class="ag-courses-item_link">
-              <div class="ag-courses-item_bg"></div>
-
-              <div class="ag-courses-item_title">Wordle</div>
-
-              <div class="ag-courses-item_date-box">
-                Test your word skills with a wordle challenge
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </body>
+				<!-- Wordle Feature -->
+				<a th:href="@{/user/wordle}" class="feature-card-link">
+					<div class="feature-card-top">
+						<i class="fas fa-scroll" style="color: #f59e0b;"></i>
+					</div>
+					<div class="feature-card-bottom">
+						<div class="feature-card-title">Wordle</div>
+						<div class="feature-card-description">Test your word skills with daily wordle challenges.</div>
+					</div>
+				</a>
+			</div>
+		</div>
+	</section>
+</body>
 </html>

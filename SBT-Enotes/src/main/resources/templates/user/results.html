@@ -7,15 +7,31 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Wellbeing Results</title>
+    <title>Wellness Results</title>
   </head>
   <body>
     <section>
-      <div class="form_datas">
-        <div class="form_headings">
-          <h1>Wellbeing Result</h1>
+      <div class="results-container">
+        <div class="results-card">
+          <div class="results-icon">
+            <i class="fas fa-check-circle" style="color: #10b981;"></i>
+          </div>
+
+          <h1 class="results-title">Wellness Assessment Complete</h1>
+
+          <p class="results-message" th:text="${resultMessage}"></p>
+
+          <div class="results-score">
+            <div class="score-label">Your Wellness Score</div>
+            <div class="score-value" th:text="${wellnessScore} + '/100'">Calculated</div>
+          </div>
+
+          <a th:href="@{/user/main}" class="btn-continue">
+            <i class="fas fa-arrow-right"></i>
+            <span>Back to Dashboard</span>
+          </a>
         </div>
-      <p th:text="${resultMessage} " style="color: aliceblue;"></p>
       </div>
+    </section>
   </body>
 </html>

@@ -8,29 +8,43 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Meditation</title>
+    <title>Breathing Box</title>
   </head>
   <body>
-    <section><div class="set_budget">
-      <div class="input">
-        <label>Select Breaths</label>
-        <select class="breath-input">
-          <option value="3">3 Breaths</option>
-          <option value="5">5 Breaths</option>
-          <option value="7">7 Breaths</option>
-        </select>
+    <section>
+      <div class="breathbox-container">
+        <div class="breathbox-card">
+          <h1 class="breathbox-title">Breathing Box</h1>
+
+          <div class="form-group">
+            <label for="breathSelect" class="form-label">Select Breaths</label>
+            <select id="breathSelect" class="breath-input">
+              <option value="3">3 Breaths</option>
+              <option value="5">5 Breaths</option>
+              <option value="7">7 Breaths</option>
+            </select>
+          </div>
+
+          <div class="circle-progress">
+            <div class="circle-center">
+              <span class="breaths-text">3</span>
+            </div>
+          </div>
+
+          <p class="breath-status">Breaths remaining: <span class="breaths-text">3</span></p>
+
+          <p class="instructions">
+            Follow the circle as it expands and contracts with your breathing. Breathe in as the circle grows, hold, then exhale as it shrinks.
+          </p>
+
+          <button class="btn-begin start">
+            <i class="fas fa-play"></i>
+            <span>Begin Breathing</span>
+          </button>
+        </div>
       </div>
-      <div class="circle-wrap">
-        <div class="circle-outline"></div>
-        <div class="circle-progress"></div>
-      </div>
-      <p class="breaths">Breaths remaining: <span class="breaths-text">3</span></p>
-      <p class="instructions">Are you ready to start breathing?</p>
-      <button class="start">Begin</button>
-      </div>
+
       <script th:src="@{/js/script.js}"></script>
     </section>
-    
-    
   </body>
 </html>

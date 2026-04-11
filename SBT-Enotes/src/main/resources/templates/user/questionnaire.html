@@ -7,35 +7,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wellbeing Questionnaire</title>
+    <title>Questionnaire</title>
 </head>
 <body>
-    
     <section>
-        <div class = "form_datas">
-            <div class="form_headings">
-                <h1>Wellbeing</h1>
-              </div>
-              <form th:action="@{/user/questionnaire}" th:method="post">
-                <div class="form_inputs">
-                    <h2 style="font-size: 45px;"><label th:text="${currentQuestion}"></label></h2>
-                    <label>Choose an option:</label>
-                    <div class="two">
-                      <select name="answer">
-                        <option value="a">Very Positive</option>
-            <option value="b">Positive</option>
-            <option value="c">Neutral</option>
-            <option value="d">Negative</option>
-            <option value="e">Very Negative</option>
-                      </select>
+        <div class="questionnaire-container">
+            <div class="questionnaire-card">
+                <!-- Progress -->
+                <div class="progress-section">
+                    <div class="progress-label">
+                        <span>Progress</span>
+                        <span th:text="${progressPercentage} + '%'">25%</span>
                     </div>
-                    <button class="btn" type="submit">
-                      Next
-                    </button>
-                  </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" th:style="'width: ' + ${progressPercentage} + '%;'"></div>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <form th:action="@{/user/questionnaire}" th:method="post">
+                    <!-- Question -->
+                    <div class="question-section">
+                        <div class="question-number" th:text="'Question ' + ${questionNumber} + ' of ' + ${totalQuestions}">Question 1 of 4</div>
+                        <h2 class="question-text" th:text="${currentQuestion}"></h2>
+                    </div>
+
+                    <!-- Answer Section -->
+                    <div class="answer-section">
+                        <div class="slider-container">
+                            <input type="range" id="answer-slider" name="answer" min="1" max="5" value="3" onchange="updateValue(this.value)">
+                            <div class="slider-labels">
+                                <span>Very Calm</span>
+                                <span>Very Stressed</span>
+                            </div>
+                        </div>
+
+                        <div class="slider-value" id="slider-value">3</div>
+                    </div>
+
+                    <!-- Wellness Score -->
+                    <div class="wellness-score">
+                        <div class="wellness-score-label">Current Response Level</div>
+                        <div class="wellness-score-value" id="response-label">Neutral (3/5)</div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="form-actions">
+                        <button type="button" class="btn-action btn-back" onclick="history.back()">
+                            <i class="fas fa-arrow-left"></i>
+                            <span>Back</span>
+                        </button>
+                        <button type="submit" class="btn-action btn-next">
+                            <span>Next</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
                 </form>
+            </div>
         </div>
     </section>
-    
+
+    <script>
+        const labels = ["", "Very Calm (1/5)", "Calm (2/5)", "Neutral (3/5)", "Stressed (4/5)", "Very Stressed (5/5)"];
+        
+        function updateValue(value) {
+            document.getElementById('slider-value').textContent = value;
+            document.getElementById('response-label').textContent = labels[value];
+        }
+
+        // Update slider display on page load
+        document.getElementById('answer-slider').addEventListener('input', function(e) {
+            updateValue(e.target.value);
+        });
+    </script>
 </body>
 </html>

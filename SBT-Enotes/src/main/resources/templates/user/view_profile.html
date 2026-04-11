@@ -3,91 +3,107 @@
 	th:replace="user/base::layout(~{::section})">
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Profile</title>
 </head>
 <body>
-
 	<section>
-		<div class="container p-5">
-			<div class="row">
-				<div class="col-md-6">
-					<div class="card paint-card">
-						<div class="card-body" style="background-color:#d4d0d0">
-							<form th:action="@{/saveUser}" method="post">
+		<div class="profile-container">
+			<h1 class="profile-title">Profile</h1>
 
-								<p class="fs-4 text-center text-succes" style="font-family: 'Monotype Corsiva';color: #1a365d;"><b>View Profile</b></p>
-								<hr>
-								<div class="form-group mt-2">
-									<label style="color: #1a365d;"><b>Name</b></label> <input type="text" name="name"
-										th:value="${user.name}" readonly class="form-control"
-										required="required">
+			<div class="profile-grid">
+				<!-- Left Column - View Profile -->
+				<div class="profile-card">
+					<h3 class="profile-section-title">Profile Information</h3>
 
-								</div>
-
-								<div class="form-group mt-2">
-									<label style="color: #1a365d; "> <b>Email</b></label> <input type="email" name="email"
-										th:value="${user.email}" readonly class="form-control"
-										required="required">
-								</div>
-
-								<div class="form-group mt-2">
-								    <label style="color: #1a365d;"> <b>About</b></label>
-									<textarea rows="3" cols="" class="form-control" name="about"
-										th:value="${user.about}" readonly placeholder="Enter About">[[${user.about}]]</textarea>
-								</div>
-
-
-
-							</form>
+					<div class="profile-info">
+					<div class="profile-avatar">
+						<span th:text="${user.name.substring(0, 1).toUpperCase()}"></span>
+					</div>
+							<h3 th:text="${user.name}"></h3>
+							<p th:text="${user.email}"></p>
 						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="form-label">Full Name</label>
+						<input type="text" class="form-control" th:value="${user.name}" disabled>
+					</div>
+
+					<div class="form-group">
+						<label class="form-label">Email Address</label>
+						<input type="email" class="form-control" th:value="${user.email}" disabled>
+					</div>
+
+					<div class="form-group">
+						<label class="form-label">About You</label>
+						<textarea class="form-control" disabled>[[${user.about}]]</textarea>
 					</div>
 				</div>
 
-				<div class="col-md-6">
-					<div class="card paint-card">
-						<div class="card-body" style="background-color:#d4d0d0">
-							<form th:action="@{/user/updateUser}" method="post">
+				<!-- Right Column - Edit Profile & Stats -->
+				<div>
+					<div class="profile-card">
+						<h3 class="profile-section-title">Edit Profile</h3>
 
-								<p class="fs-4 text-center text-dange" style="font-family: 'Monotype Corsiva';color: #1a365d;"><b>Edit Profile</b></p>
-								<hr>
-								<div th:if="${session.msg}" class="text-center" role="alert">
+						<!-- Alert Message -->
+						<div th:if="${session.msg}" class="alert-success">
+							<th:block th:text="${session.msg}"></th:block>
+							<th:block th:text="${#session.removeAttribute('msg')}"></th:block>
+						</div>
 
-									<h4 class="text-success" th:text="${session.msg}"></h4>
-									<th:block th:text="${#session.removeAttribute('msg')}"></th:block>
-								</div>
+						<form th:action="@{/user/updateUser}" method="post">
+							<div class="form-group">
+								<label for="name" class="form-label">Full Name</label>
+								<input type="text" id="name" name="name" class="form-control" th:value="${user.name}" required>
+							</div>
 
-								<div class="form-group mt-2">
-									<label style="color: #1a365d;font-weight: 600;">Enter Name</label> <input type="text" name="name"
-										th:value="${user.name}" class="form-control"
-										required="required">
+							<div class="form-group">
+								<label for="email" class="form-label">Email Address</label>
+								<input type="email" id="email" name="email" class="form-control" th:value="${user.email}" disabled>
+							</div>
 
-								</div>
+							<div class="form-group">
+								<label for="about" class="form-label">About You</label>
+								<textarea id="about" name="about" class="form-control" placeholder="Tell us about yourself...">[[${user.about}]]</textarea>
+							</div>
 
-								<div class="form-group mt-2">
-									<label style="color: #1a365d;font-weight: 600;">Enter Email</label> <input type="email" name="email"
-										th:value="${user.email}" readonly class="form-control"
-										required="required">
-								</div>
+							<input type="hidden" name="id" th:value="${user.id}">
 
+							<div class="form-actions">
+								<button type="submit" class="btn-primary">
+									<i class="fas fa-save"></i>
+									<span>Save Changes</span>
+								</button>
+								<button type="reset" class="btn-secondary">
+									<i class="fas fa-redo"></i>
+									<span>Reset</span>
+								</button>
+							</div>
+						</form>
+					</div>
 
-								<div class="form-group mt-2">
-									<label style="color: #1a365d;"> <b>About</b></label>
-									<textarea rows="3" cols="" class="form-control" name="about"
-										placeholder="Enter About">[[${user.about}]]</textarea>
-								</div>
-								<input type="hidden" name="id" th:value="${user.id}">
+					<!-- Stats Card -->
+					<div class="profile-card" style="margin-top: 32px;">
+						<h3 class="profile-section-title" style="margin-bottom: 16px;">Your Stats</h3>
 
+						<div class="stats-grid">
+							<div class="stat-item">
+								<div class="stat-label">Notes Count</div>
+								<div class="stat-value" th:text="${noteCount}">0</div>
+							</div>
+							<div class="stat-item">
+								<div class="stat-label">Wellness Score</div>
+								<div class="stat-value" th:text="${wellnessScore} + '/100'">0/100</div>
+							</div>
+						</div>
 
-								<div class="text-center mt-3" >
-									<button class="btn bg-primary text-white" >Update <i class="fas fa-save"></i></button>
-									<button type="reset" class="btn btn-danger text-white">Reset <i class="fas fa-rectangle-xmark"></i></button>
-								</div>
-							</form>
+						<div class="status-message">
+							<i class="fas fa-chart-line" style="margin-right: 8px;"></i>
+							<span th:if="${wellnessScore == 0}">Complete a wellness assessment to track your score!</span>
+							<span th:if="${wellnessScore > 0}">Keep building your routine</span>
 						</div>
 					</div>
 				</div>
-
-
 			</div>
 		</div>
 	</section>

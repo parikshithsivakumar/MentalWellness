@@ -1,0 +1,422 @@
+/* ============================================
+   WORDLE GAME - MAIN CONTAINER STYLES
+   ============================================ */
+
+body {
+    overflow-x: hidden;
+}
+
+.wordle-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.wordle-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #1f2937;
+    margin: 0 0 10px 0;
+    text-align: center;
+    letter-spacing: -0.5px;
+}
+
+.wordle-subtitle {
+    font-size: 1.05rem;
+    color: #6b7280;
+    text-align: center;
+    margin-bottom: 40px;
+    font-weight: 400;
+}
+
+/* ============================================
+   GRID LAYOUT - TWO COLUMNS
+   ============================================ */
+
+.wordle-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+/* ============================================
+   LEFT COLUMN - WORDS PROGRESS
+   ============================================ */
+
+.words-progress-section {
+    background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+    border-radius: 16px;
+    padding: 30px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    min-height: 400px;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 25px 0;
+    padding-bottom: 15px;
+    border-bottom: 3px solid #3b82f6;
+    display: inline-block;
+}
+
+.attempts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+}
+
+.attempt-row {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.no-attempts {
+    color: #9ca3af;
+    font-size: 0.95rem;
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+}
+
+/* ============================================
+   WORD TILES STYLING
+   ============================================ */
+
+.word-tiles {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.tile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    border-radius: 8px;
+    color: white;
+    text-transform: uppercase;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+.tile:hover {
+    transform: scale(1.05);
+}
+
+/* Color States for Tiles */
+.tile.GREEN {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.tile.YELLOW {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: #7c2d0f;
+}
+
+.tile.BLACK {
+    background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+}
+
+/* ============================================
+   RIGHT COLUMN - FORM SECTION
+   ============================================ */
+
+.form-section {
+    background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+    border-radius: 16px;
+    padding: 30px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+}
+
+.wordle-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #374151;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    background: #f8faff;
+}
+
+.form-input::placeholder {
+    color: #9ca3af;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+/* ============================================
+   SUBMIT BUTTON
+   ============================================ */
+
+.submit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+.submit-btn .material-symbols-outlined {
+    font-size: 1.3rem;
+}
+
+/* ============================================
+   ERROR MESSAGE
+   ============================================ */
+
+.error-message {
+    background: linear-gradient(135deg, #fee2e2 0%, #fed7d7 100%);
+    color: #991b1b;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border-left: 4px solid #dc2626;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: center;
+    animation: slideIn 0.3s ease-out;
+}
+
+/* ============================================
+   INSTRUCTIONS SECTION
+   ============================================ */
+
+.instructions-section {
+    margin-top: 35px;
+    padding-top: 25px;
+    border-top: 2px solid #e5e7eb;
+}
+
+.instructions-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 18px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.instructions-title .material-symbols-outlined {
+    font-size: 1.4rem;
+    color: #3b82f6;
+}
+
+.instructions-list {
+    list-style: disc;
+    margin: 0;
+    padding-left: 25px;
+    color: #6b7280;
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+.instructions-list li {
+    margin-bottom: 10px;
+}
+
+.instructions-subtitle {
+    margin-top: 12px !important;
+    font-weight: 600;
+    color: #374151;
+}
+
+.color-meanings {
+    list-style: none;
+    padding-left: 0;
+    margin: 12px 0 0 0;
+}
+
+.color-meanings li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: #f9fafb;
+    border-radius: 6px;
+}
+
+.color-tile {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.color-tile.GREEN {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.color-tile.YELLOW {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.color-tile.BLACK {
+    background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 1024px) {
+    .wordle-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .wordle-container {
+        padding: 30px 15px;
+    }
+
+    .words-progress-section,
+    .form-section {
+        min-height: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .wordle-title {
+        font-size: 2rem;
+    }
+
+    .wordle-subtitle {
+        font-size: 0.95rem;
+        margin-bottom: 30px;
+    }
+
+    .wordle-grid {
+        gap: 20px;
+    }
+
+    .words-progress-section,
+    .form-section {
+        padding: 20px;
+    }
+
+    .section-title {
+        font-size: 1.3rem;
+    }
+
+    .tile {
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+    }
+
+    .form-input {
+        padding: 12px 14px;
+        font-size: 1rem;
+    }
+
+    .submit-btn {
+        padding: 12px 24px;
+        font-size: 0.9rem;
+    }
+
+    .instructions-list {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .wordle-title {
+        font-size: 1.5rem;
+    }
+
+    .wordle-subtitle {
+        font-size: 0.85rem;
+    }
+
+    .tile {
+        width: 40px;
+        height: 40px;
+        font-size: 0.95rem;
+    }
+
+    .form-label {
+        font-size: 0.85rem;
+    }
+
+    .instructions-section {
+        margin-top: 20px;
+    }
+
+    .instructions-title {
+        font-size: 1rem;
+    }
+}

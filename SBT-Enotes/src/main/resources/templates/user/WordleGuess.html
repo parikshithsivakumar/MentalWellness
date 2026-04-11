@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="user/base::layout(~{::section})">
+<head>
+	<meta charset="UTF-8">
+	<title>Wordle Challenge</title>
+	<link rel="stylesheet" th:href="@{/css/wordle.css}">
+</head>
+<body>
+	<section>
+		<div class="wordle-container">
+			<h1 class="wordle-title">Wordle Challenge</h1>
+			<p class="wordle-subtitle">Test your word skills with a wordle challenge</p>
+			
+			<div class="wordle-grid">
+				<!-- Left Column: Words Progress -->
+				<div class="words-progress-section">
+					<h2 class="section-title">Words Progress</h2>
+					<div class="attempts-list">
+						<p class="no-attempts" th:if="${entries.isEmpty()}">No attempts yet. Start guessing!</p>
+					<div class="attempt-row" th:each="entry : ${entries}">
+							<div class="word-tiles">
+								<span class="tile" th:each="char : ${entry}" 
+									th:class="'tile ' + ${char.color}" 
+									th:text="${char.letter}"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Right Column: Input Form -->
+				<div class="form-section">
+					<form class="wordle-form" method="post" th:action="@{/user/wordle}" onsubmit="return validateForm()">
+						<div class="form-group">
+							<label for="guess" class="form-label">Enter your guess:</label>
+							<input 
+								class="form-input" 
+								id="guess" 
+								type="text" 
+								name="guess" 
+								placeholder="Enter a 5-letter word"
+								maxlength="5"
+								autocomplete="off"
+								autofocus
+								required />
+						</div>
+						
+						<button class="submit-btn" type="submit">Submit Guess</button>
+						
+						<div class="error-message" th:text="${errorMessage}" th:if="${errorMessage}"></div>
+					</form>
+
+					<!-- Instructions -->
+					<div class="instructions-section">
+						<h3 class="instructions-title">How to Play</h3>
+						<ul class="instructions-list">
+							<li>Enter a valid 5-letter word</li>
+							<li>After each guess, tiles show feedback</li>
+							<li><strong>Green:</strong> Letter in correct position</li>
+							<li><strong>Yellow:</strong> Letter is in word, wrong position</li>
+							<li><strong>Gray:</strong> Letter not in the word</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script>
+		function validateForm() {
+			const guess = document.getElementById('guess').value.trim().toUpperCase();
+			if (guess.length !== 5 || !/^[A-Z]+$/.test(guess)) {
+				alert('Please enter exactly 5 letters');
+				return false;
+			}
+			document.getElementById('guess').value = guess;
+			return true;
+		}
+		
+		document.addEventListener('DOMContentLoaded', function() {
+			document.getElementById('guess').focus();
+		});
+	</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="user/base::layout(~{::section})">
+<head>
+	<meta charset="UTF-8">
+	<title>Wordle Challenge</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+	<link rel="stylesheet" th:href="@{/css/wordle.css}">
+</head>
+<body>
+	<section>
+		<div class="wordle-container">
+			<h1 class="wordle-title">Wordle Challenge</h1>
+			<p class="wordle-subtitle">Test your word skills with a wordle challenge</p>
+			
+			<div class="wordle-grid">
+				<!-- Words Progress Section (Left Column) -->
+				<div class="words-progress-section">
+					<h2 class="section-title">Words Progress</h2>
+					<div class="attempts-list">
+						<div th:if="${entries.isEmpty()}">
+							<p class="no-attempts">No attempts yet. Start guessing!</p>
+						</div>
+						<div th:unless="${entries.isEmpty()}">
+							<div class="attempt-row" th:each="entry : ${entries}">
+								<div class="word-tiles">
+									<span class="tile" th:each="char : ${entry}" 
+										th:class="${'tile ' + char.color}"
+										th:text="${char.letter}"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Input Form Section (Right Column) -->
+				<div class="form-section">
+					<form class="wordle-form" method="post" th:action="@{/user/wordle}" onsubmit="return validateForm()">
+						<div class="form-group">
+							<label for="guess" class="form-label">Enter your guess:</label>
+							<input 
+								class="form-input" 
+								id="guess" 
+								type="text" 
+								name="guess" 
+								placeholder="Enter a 5-letter word"
+								maxlength="5"
+								autocomplete="off"
+								autofocus
+								required />
+						</div>
+						
+						<button class="submit-btn" type="submit">
+							Submit Guess
+						</button>
+						
+						<!-- Error Message -->
+						<div class="error-message" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+					</form>
+
+					<!-- Instructions Section -->
+					<div class="instructions-section">
+						<h3 class="instructions-title">How to Play</h3>
+						<ul class="instructions-list">
+							<li>Each guess must be a valid 5-letter word</li>
+							<li>After each guess, tiles show how close you are</li>
+							<li style="margin-top: 10px;"><strong>Color meanings:</strong>
+								<ul style="margin-top: 8px;">
+									<li><span class="color-tile GREEN"></span> <strong>Green</strong> - Letter in correct position</li>
+									<li><span class="color-tile YELLOW"></span> <strong>Yellow</strong> - Letter in word but wrong position</li>
+									<li><span class="color-tile BLACK"></span> <strong>Gray</strong> - Letter not in word</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script>
+		function validateForm() {
+			const guess = document.getElementById('guess').value.trim().toUpperCase();
+			if (guess.length !== 5) {
+				alert('Please enter exactly 5 letters');
+				return false;
+			}
+			if (!/^[A-Z]+$/.test(guess)) {
+				alert('Please enter only letters');
+				return false;
+			}
+			document.getElementById('guess').value = guess;
+			return true;
+		}
+		
+		document.addEventListener('DOMContentLoaded', function() {
+			document.getElementById('guess').focus();
+		});
+	</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="user/base::layout(~{::section})">
+<head>
+	<meta charset="UTF-8">
+	<title>Wordle Challenge</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+	<link rel="stylesheet" th:href="@{/css/wordle.css}">
+</head>
+<body>
+	<section>
+		<div class="wordle-container">
+			<h1 class="wordle-title">Wordle Challenge</h1>
+			<p class="wordle-subtitle">Test your word skills with a wordle challenge</p>
+			
+			<div class="wordle-grid">
+				<!-- Words Progress Section (Left Column) -->
+				<div class="words-progress-section">
+					<h2 class="section-title">Words Progress</h2>
+					<div class="attempts-list" id="attempts-list">
+						<div th:if="${entries.isEmpty()}">
+							<p class="no-attempts">No attempts yet. Start guessing!</p>
+						</div>
+						<th:block th:unless="${entries.isEmpty()}">
+							<div class="attempt-row" th:each="entry : ${entries}">
+								<div class="word-tiles">
+									<span class="tile" th:each="character : ${entry}" 
+										th:class="${character.color}"
+										th:text="${character.letter}">A</span>
+								</div>
+							</div>
+						</th:block>
+					</div>
+				</div>
+
+				<!-- Input Form Section (Right Column) -->
+				<div class="form-section">
+					<form class="wordle-form" method="post" th:action="@{/user/wordle}" onsubmit="return validateForm()">
+						<div class="form-group">
+							<label for="guess" class="form-label">Enter your guess:</label>
+							<input 
+								class="form-input" 
+								id="guess" 
+								type="text" 
+								name="guess" 
+								placeholder="Enter a 5-letter word"
+								maxlength="5" 
+								required
+								autocomplete="off"
+								autofocus/>
+						</div>
+						
+						<button class="submit-btn" type="submit" id="submitBtn">
+							<span class="material-symbols-outlined">check</span>
+							Submit Guess
+						</button>
+						
+						<!-- Error Message -->
+						<div class="error-message" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+					</form>
+
+					<!-- Instructions Section -->
+					<div class="instructions-section">
+						<h3 class="instructions-title">
+							<span class="material-symbols-outlined">info</span>
+							How to Play
+						</h3>
+						<ul class="instructions-list">
+							<li>Each guess must be a valid 5-letter word.</li>
+							<li>After each guess, tiles show how close you are.</li>
+							<li class="instructions-subtitle">Color meanings:
+								<ul class="color-meanings">
+									<li><span class="color-tile GREEN"></span> <strong>Green</strong> - Letter is in the correct position</li>
+									<li><span class="color-tile YELLOW"></span> <strong>Yellow</strong> - Letter is in the word but wrong position</li>
+									<li><span class="color-tile BLACK"></span> <strong>Gray</strong> - Letter is not in the word</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script>
+		function validateForm() {
+			const guess = document.getElementById('guess').value.trim().toUpperCase();
+			if (guess.length !== 5) {
+				alert('Please enter exactly 5 letters');
+				return false;
+			}
+			if (!/^[A-Z]+$/.test(guess)) {
+				alert('Please enter only letters');
+				return false;
+			}
+			document.getElementById('guess').value = guess;
+			return true;
+		}
+		
+		document.addEventListener('DOMContentLoaded', function() {
+			document.getElementById('guess').focus();
+		});
+	</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="user/base::layout(~{::section})">
+<head>
+	<meta charset="UTF-8">
+	<title>Wordle Challenge</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+	<link rel="stylesheet" th:href="@{/css/wordle.css}">
+</head>
+<body>
+	<section>
+		<div class="wordle-container">
+			<h1 class="wordle-title">Wordle Challenge</h1>
+			<p class="wordle-subtitle">Test your word skills with a wordle challenge</p>
+			
+			<div class="wordle-grid">
+				<!-- Words Progress Section (Left Column) -->
+				<div class="words-progress-section">
+					<h2 class="section-title">Words Progress</h2>
+					<div class="attempts-list" id="attempts-list">
+						<div th:if="${entries != null and entries.size() > 0}">
+							<div class="attempt-row" th:each="entry : ${entries}">
+								<div class="word-tiles">
+									<span class="tile" th:each="character : ${entry}" 
+										th:class="${character.color}"
+										th:text="${character.letter}">A</span>
+								</div>
+							</div>
+						</div>
+						<div th:if="${entries == null or entries.size() == 0}">
+							<p class="no-attempts">No attempts yet. Start guessing!</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- Input Form Section (Right Column) -->
+				<div class="form-section">
+					<form class="wordle-form" method="post" th:action="@{/user/wordle}" onsubmit="return validateForm()">
+						<div class="form-group">
+							<label for="guess" class="form-label">Enter your guess:</label>
+							<input 
+								class="form-input" 
+								id="guess" 
+								type="text" 
+								name="guess" 
+								placeholder="Enter a 5-letter word"
+								maxlength="5" 
+								required
+								autocomplete="off"
+								autofocus/>
+						</div>
+						
+						<button class="submit-btn" type="submit" id="submitBtn">
+							<span class="material-symbols-outlined">check</span>
+							Submit Guess
+						</button>
+						
+						<!-- Error Message -->
+						<div class="error-message" th:if="${errorMessage != null and !errorMessage.isEmpty()}" th:text="${errorMessage}"></div>
+					</form>
+
+					<!-- Instructions Section -->
+					<div class="instructions-section">
+						<h3 class="instructions-title">
+							<span class="material-symbols-outlined">info</span>
+							How to Play
+						</h3>
+						<ul class="instructions-list">
+							<li>Each guess must be a valid 5-letter word.</li>
+							<li>After each guess, tiles show how close you are.</li>
+							<li class="instructions-subtitle">Color meanings:
+								<ul class="color-meanings">
+									<li><span class="color-tile GREEN"></span> <strong>Green</strong> - Letter is in the correct position</li>
+									<li><span class="color-tile YELLOW"></span> <strong>Yellow</strong> - Letter is in the word but wrong position</li>
+									<li><span class="color-tile BLACK"></span> <strong>Gray</strong> - Letter is not in the word</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script>
+		function validateForm() {
+			const guess = document.getElementById('guess').value.trim();
+			if (guess.length !== 5) {
+				alert('Please enter exactly 5 letters');
+				return false;
+			}
+			if (!/^[a-zA-Z]+$/.test(guess)) {
+				alert('Please enter only letters');
+				return false;
+			}
+			return true;
+		}
+	</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})">
+<head>
+	<meta charset="UTF-8">
+	<title>Wordle Challenge</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+	<link rel="stylesheet" th:href="@{/css/wordle.css}">
+</head>
+<body>
+	<section>
+		<div class="wordle-container">
+			<h1 class="wordle-title">Wordle Challenge</h1>
+			<p class="wordle-subtitle">Test your word skills with a wordle challenge</p>
+			
+			<div class="wordle-grid">
+				<!-- Words Progress Section (Left Column) -->
+				<div class="words-progress-section">
+					<h2 class="section-title">Words Progress</h2>
+					<div class="attempts-list">
+						<div class="attempt-row" th:if="${entries != null and entries.isEmpty()}">
+							<p class="no-attempts">No attempts yet. Start guessing!</p>
+						</div>
+						<th:block th:each="entry : ${entries}">
+							<div class="attempt-row">
+								<div class="word-tiles">
+									<span class="tile" th:each="character : ${entry}" 
+										th:class="${character.color}"
+										th:text="${character.letter}">A</span>
+								</div>
+							</div>
+						</th:block>
+					</div>
+				</div>
+
+				<!-- Input Form Section (Right Column) -->
+				<div class="form-section">
+					<form class="wordle-form" method="post" th:action="@{/user/wordle}">
+						<div class="form-group">
+							<label for="guess" class="form-label">Enter your guess:</label>
+							<input 
+								class="form-input" 
+								id="guess" 
+								type="text" 
+								name="guess" 
+								placeholder="Enter a 5-letter word"
+								maxlength="5" 
+								required
+								autocomplete="off"/>
+						</div>
+						
+						<button class="submit-btn" type="submit">
+							<span class="material-symbols-outlined">check</span>
+							Submit Guess
+						</button>
+						
+						<!-- Error Message -->
+						<div class="error-message" th:if="${errorMessage != null and !errorMessage.isEmpty()}" th:text="${errorMessage}"></div>
+					</form>
+
+					<!-- Instructions Section -->
+					<div class="instructions-section">
+						<h3 class="instructions-title">
+							<span class="material-symbols-outlined">info</span>
+							How to Play
+						</h3>
+						<ul class="instructions-list">
+							<li>Each guess must be a valid 5-letter word.</li>
+							<li>After each guess, tiles show how close you are.</li>
+							<li class="instructions-subtitle">Color meanings:
+								<ul class="color-meanings">
+									<li><span class="color-tile GREEN"></span> <strong>Green</strong> - Letter is in the correct position</li>
+									<li><span class="color-tile YELLOW"></span> <strong>Yellow</strong> - Letter is in the word but wrong position</li>
+									<li><span class="color-tile BLACK"></span> <strong>Gray</strong> - Letter is not in the word</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="base::layout(~{::section})">
+<head>
+<meta charset="UTF-8">
+<title>Wordle Challenge</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet" th:href="@{/css/wordle.css}">
+</head>
+<body>
+	<section>
+		<div class="wordle-container">
+			<h1 class="wordle-title">Wordle Challenge</h1>
+			<p class="wordle-subtitle">Test your word skills with a wordle challenge</p>
+			
+			<div class="wordle-grid">
+				<!-- Words Progress Section (Left Column) -->
+				<div class="words-progress-section">
+					<h2 class="section-title">Words Progress</h2>
+					<div class="attempts-list">
+						<div class="attempt-row" th:if="${entries.isEmpty()}">
+							<p class="no-attempts">No attempts yet. Start guessing!</p>
+						</div>
+						<div class="attempt-row" th:each="entry : ${entries}" th:if="${!entries.isEmpty()}">
+							<div class="word-tiles">
+								<span class="tile" th:each="character : ${entry}" 
+									th:class="${character.color}"
+									th:text="${character.letter}">A</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Input Form Section (Right Column) -->
+				<div class="form-section">
+					<form class="wordle-form" method="post" th:action="@{/user/wordle}">
+						<div class="form-group">
+							<label for="guess" class="form-label">Enter your guess:</label>
+							<input 
+								class="form-input" 
+								id="guess" 
+								type="text" 
+								name="guess" 
+								placeholder="Enter a 5-letter word"
+								maxlength="5" 
+								required
+								autocomplete="off"/>
+						</div>
+						
+						<button class="submit-btn" type="submit">
+							<span class="material-symbols-outlined">check</span>
+							Submit Guess
+						</button>
+						
+						<!-- Error Message -->
+						<div class="error-message" th:if="${errorMessage and !errorMessage.isEmpty()}" th:text="${errorMessage}"></div>
+					</form>
+
+					<!-- Instructions Section -->
+					<div class="instructions-section">
+						<h3 class="instructions-title">
+							<span class="material-symbols-outlined">info</span>
+							How to Play
+						</h3>
+						<ul class="instructions-list">
+							<li>Each guess must be a valid 5-letter word.</li>
+							<li>After each guess, tiles show how close you are.</li>
+							<li class="instructions-subtitle">Color meanings:
+								<ul class="color-meanings">
+									<li><span class="color-tile GREEN"></span> <strong>Green</strong> - Letter is in the correct position</li>
+									<li><span class="color-tile YELLOW"></span> <strong>Yellow</strong> - Letter is in the word but wrong position</li>
+									<li><span class="color-tile BLACK"></span> <strong>Gray</strong> - Letter is not in the word</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="base::layout(~{::section})">
+<head>
+<meta charset="UTF-8">
+<title>Wordle Challenge</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet" th:href="@{/css/wordle.css}">
+</head>
+<body>
+	<section>
+		<div class="wordle-container">
+			<h1 class="wordle-title">Wordle Challenge</h1>
+			
+			<div class="wordle-grid">
+				<!-- Words Progress Section -->
+				<div class="List_box">
+					<h2>Words Progress</h2>
+					<ul class="List_data">
+						<li class="List" th:each="entry : ${entries}">
+							<span th:each="character : ${entry}"
+								th:class="${character.color}"
+								th:text="${character.letter}">A</span>
+						</li>
+					</ul>
+				</div>
+
+				<!-- Wordle Form Section -->
+				<div class="Form_box">
+					<p class="message">Test your word skills with a wordle challenge</p>
+					
+					<form class="Form_data" action="#" method="post" th:action="@{/user/wordle}">
+						<div class="input-group">
+							<label for="guess">Enter your guess:</label>
+							<input class="box_word" id="guess" type="text" name="guess" placeholder="Enter a 5-letter word" maxlength="5" required/>
+						</div>
+						
+						<button class="submit_button" type="submit">Submit Guess</button>
+						
+						<div class="error" th:text="${errorMessage}" th:if="${errorMessage}"></div>
+						
+						<!-- Instructions -->
+						<div class="instructions-section">
+							<p class="heading_ins">
+								<span class="material-symbols-outlined">info</span>
+								How to Play
+							</p>
+							<ul class="instructions-list">
+								<li>Each guess must be a valid five-letter word.</li>
+								<li>The color of a tile will change to show you how close your guess was.</li>
+								<li>Color meanings:
+									<ul>
+										<li><span class="GREEN">Green</span> - Letter is in the correct spot</li>
+										<li><span class="YELLOW">Yellow</span> - Letter is in the word but wrong spot</li>
+										<li><span class="BLACK">Gray</span> - Letter is not in the word</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="base::layout(~{::section})">
+<head>
+<meta charset="UTF-8">
+<title>Wordle Challenge</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet" th:href="@{/css/wordle.css}">
+</head>
+<body>
+	<section>
+		<div class="wordle-container">
+			<h1 class="wordle-title">Wordle Challenge</h1>
+			
+			<div class="wordle-grid">
+				<!-- Words Progress Section -->
+				<div class="List_box">
+					<h2>Words Progress</h2>
+					<ul class="List_data">
+						<li class="List" th:each="entry : ${entries}">
+							<span th:each="character : ${entry}"
+								th:class="${character.color}"
+								th:text="${character.letter}">A</span>
+						</li>
+					</ul>
+				</div>
+
+				<!-- Wordle Form Section -->
+				<div class="Form_box">
+					<p class="message">Test your word skills with a wordle challenge</p>
+					
+					<form class="Form_data" action="#" method="post" th:action="@{/user/wordle}">
+						<div class="input-group">
+							<label for="guess">Enter your guess:</label>
+							<input class="box_word" id="guess" type="text" name="guess" placeholder="Enter a 5-letter word" maxlength="5" required/>
+						</div>
+						
+						<button class="submit_button" type="submit">Submit Guess</button>
+						
+						<div class="error" th:text="${errorMessage}" th:if="${errorMessage}"></div>
+						
+						<!-- Instructions -->
+						<div class="instructions-section">
+							<p class="heading_ins">
+								<span class="material-symbols-outlined">info</span>
+								How to Play
+							</p>
+							<ul class="instructions-list">
+								<li>Each guess must be a valid five-letter word.</li>
+								<li>The color of a tile will change to show you how close your guess was.</li>
+								<li>Color meanings:
+									<ul>
+										<li><span class="GREEN">Green</span> - Letter is in the correct spot</li>
+										<li><span class="YELLOW">Yellow</span> - Letter is in the word but wrong spot</li>
+										<li><span class="BLACK">Gray</span> - Letter is not in the word</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="base::layout(~{::section})">
+<head>
+<meta charset="UTF-8">
+<title>Wordle Challenge</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet" th:href="@{/css/wordle.css}">
+</head>
+<body>
+	<section>
+		<div class="wordle-container">
+			<h1 class="wordle-title">Wordle Challenge</h1>
+			
+			<div class="wordle-grid">
+				<!-- Words Progress Section -->
+				<div class="List_box">
+					<h2>Words Progress</h2>
+					<ul class="List_data">
+						<li class="List" th:each="entry : ${entries}">
+							<span th:each="character : ${entry}"
+								th:class="${character.color}"
+								th:text="${character.letter}">A</span>
+						</li>
+					</ul>
+				</div>
+
+				<!-- Wordle Form Section -->
+				<div class="Form_box">
+					<p class="message">Test your word skills with a wordle challenge</p>
+					
+					<form class="Form_data" action="#" method="post" th:action="@{/wordle}">
+						<div class="input-group">
+							<label for="guess">Enter your guess:</label>
+							<input class="box_word" id="guess" type="text" name="guess" placeholder="Enter a 5-letter word" maxlength="5" required/>
+						</div>
+						
+						<button class="submit_button" type="submit">Submit Guess</button>
+						
+						<div class="error" th:text="${errorMessage}" th:if="${errorMessage}"></div>
+						
+						<!-- Instructions -->
+						<div class="instructions-section">
+							<p class="heading_ins">
+								<span class="material-symbols-outlined">info</span>
+								How to Play
+							</p>
+							<ul class="instructions-list">
+								<li>Each guess must be a valid five-letter word.</li>
+								<li>The color of a tile will change to show you how close your guess was.</li>
+								<li>Color meanings:
+									<ul>
+										<li><span class="GREEN">Green</span> - Letter is in the correct spot</li>
+										<li><span class="YELLOW">Yellow</span> - Letter is in the word but wrong spot</li>
+										<li><span class="BLACK">Gray</span> - Letter is not in the word</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="base::layout(~{::section})">
+<head>
+<meta charset="UTF-8">
+<title>Wordle Challenge</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet" th:href="@{/css/wordle.css}">
+</head>
+<body>
+	<section>
+		<div class="wordle-container">
+			<h1 class="wordle-title">Wordle Challenge</h1>
+			
+			<div class="wordle-grid">
+				<!-- Words Progress Section -->
+				<div class="List_box">
+					<h2>Words Progress</h2>
+					<ul class="List_data">
+						<li class="List" th:each="entry : ${entries}">
+							<span th:each="character : ${entry}"
+								th:class="${character.color}"
+								th:text="${character.letter}">A</span>
+						</li>
+					</ul>
+				</div>
+
+				<!-- Wordle Form Section -->
+				<div class="Form_box">
+					<p class="message">Test your word skills with a wordle challenge</p>
+					
+					<form class="Form_data" action="#" method="post" th:action="@{/wordle}">
+						<div class="input-group">
+							<label for="guess">Enter your guess:</label>
+							<input class="box_word" id="guess" type="text" name="guess" placeholder="Enter a 5-letter word" maxlength="5" required/>
+						</div>
+						
+						<button class="submit_button" type="submit">Submit Guess</button>
+						
+						<div class="error" th:text="${errorMessage}" th:if="${errorMessage}"></div>
+						
+						<!-- Instructions -->
+						<div class="instructions-section">
+							<p class="heading_ins">
+								<span class="material-symbols-outlined">info</span>
+								How to Play
+							</p>
+							<ul class="instructions-list">
+								<li>Each guess must be a valid five-letter word.</li>
+								<li>The color of a tile will change to show you how close your guess was.</li>
+								<li>Color meanings:
+									<ul>
+										<li><span class="GREEN">Green</span> - Letter is in the correct spot</li>
+										<li><span class="YELLOW">Yellow</span> - Letter is in the word but wrong spot</li>
+										<li><span class="BLACK">Gray</span> - Letter is not in the word</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="base::layout(~{::section})">
+<head>
+<meta charset="UTF-8">
+<title>Wordle Challenge</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet" th:href="@{/css/wordle.css}">
+</head>
+<body>
+	<section>
+		<div class="wordle-container">
+			<h1 class="wordle-title">Wordle Challenge</h1>
+			
+			<div class="wordle-grid">
+				<!-- Words Progress Section -->
+				<div class="List_box">
+					<h2>Words Progress</h2>
+					<ul class="List_data">
+						<li class="List" th:each="entry : ${entries}">
+							<span th:each="character : ${entry}"
+								th:class="${character.color}"
+								th:text="${character.letter}">A</span>
+						</li>
+					</ul>
+				</div>
+
+				<!-- Wordle Form Section -->
+				<div class="Form_box">
+					<p class="message">Test your word skills with a wordle challenge</p>
+					
+					<form class="Form_data" action="#" method="post" th:action="@{/wordle}">
+        font-weight: 700;
+        font-size: 1rem;
+    }
+
+    .YELLOW {
+        background: rgb(249, 226, 98);
+        color: #1c2c47;
+        padding: 10px 14px;
+        border-radius: 6px;
+        margin: 2px;
+        display: inline-block;
+        font-weight: 700;
+        font-size: 1rem;
+    }
+
+    .BLACK {
+        background: #1c2c47;
+        color: white;
+        padding: 10px 14px;
+        border-radius: 6px;
+        margin: 2px;
+        display: inline-block;
+        font-weight: 700;
+        font-size: 1rem;
+    }
+
+    .error {
+        display: block;
+        border-radius: 5px;
+        background-color: #f34646;
+        color: white;
+        padding: 12px;
+        margin: 10px 0;
+        font-weight: 500;
+        text-align: center;
+    }
+
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        margin: 15px 0;
+    }
+
+    .input-group label {
+        font-weight: 600;
+        color: #1c2c47;
+        font-size: 1rem;
+    }
+
+    .box_word {
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        font-size: 1rem;
+        width: 100%;
+					<form class="Form_data" action="#" method="post" th:action="@{/wordle}">
+						<div class="input-group">
+							<label for="guess">Enter your guess:</label>
+							<input class="box_word" id="guess" type="text" name="guess" placeholder="Enter a 5-letter word" maxlength="5"/>
+						</div>
+						
+						<button class="submit_button" type="submit">Submit Guess</button>
+						
+						<div class="error" th:text="${errorMessage}" th:if="${errorMessage}"></div>
+						
+						<!-- Instructions -->
+						<div class="instructions-section">
+							<p class="heading_ins">
+								<span class="material-symbols-outlined">info</span>
+								How to Play
+							</p>
+							<ul class="instructions-list">
+								<li>Each guess must be a valid five-letter word.</li>
+								<li>The color of a tile will change to show you how close your guess was.</li>
+								<li>Color meanings:
+									<ul>
+										<li><span class="GREEN">Green</span> - Letter is in the correct spot</li>
+										<li><span class="YELLOW">Yellow</span> - Letter is in the word but wrong spot</li>
+										<li><span class="BLACK">Gray</span> - Letter is not in the word</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>

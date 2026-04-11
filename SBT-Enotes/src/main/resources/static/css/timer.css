@@ -1,0 +1,184 @@
+/* Meditation Timer Styles */
+
+section {
+	background-color: #f0f8ff !important;
+	min-height: calc(100vh - 80px);
+	padding: 0 !important;
+	margin: 0 !important;
+}
+
+.timer-container {
+	max-width: 600px;
+	margin: 0 auto;
+	padding: 40px 24px;
+}
+
+.timer-card {
+	background: white !important;
+	border-radius: 12px;
+	padding: 40px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+	border: 1px solid #e5e7eb;
+	text-align: center;
+}
+
+.timer-title {
+	font-size: 32px;
+	font-weight: 800;
+	color: #0f172a;
+	margin-bottom: 32px;
+	margin-top: 0;
+}
+
+.timer-display {
+	position: relative;
+	width: 240px;
+	height: 240px;
+	margin: 0 auto 32px;
+	border-radius: 50%;
+	background: linear-gradient(135deg, #dbeafe 0%, #dcfce7 100%);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 4px 20px rgba(59, 130, 246, 0.15);
+}
+
+.timer-text {
+	font-size: 48px;
+	font-weight: 800;
+	color: #0f172a;
+	font-family: 'Courier New', monospace;
+}
+
+.timer-prompt {
+	font-size: 16px;
+	color: #6b7280;
+	margin-bottom: 24px;
+}
+
+.timer-input-group {
+	display: flex;
+	gap: 12px;
+	margin-bottom: 32px;
+	justify-content: center;
+}
+
+.timer-input {
+	width: 120px;
+	padding: 12px 16px;
+	border: 1.5px solid #e5e7eb !important;
+	border-radius: 8px;
+	font-size: 16px;
+	font-weight: 600;
+	background-color: #f9fafb !important;
+	color: #0f172a;
+	text-align: center;
+	transition: all 0.3s ease;
+}
+
+.timer-input:focus {
+	outline: none;
+	border-color: #3b82f6 !important;
+	box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.timer-label {
+	font-size: 14px;
+	color: #6b7280;
+	font-weight: 600;
+	display: block;
+	margin-bottom: 8px;
+}
+
+.btn-start {
+	padding: 14px 24px;
+	background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%) !important;
+	color: white !important;
+	border: none !important;
+	border-radius: 8px;
+	font-size: 15px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	text-decoration: none !important;
+	margin: 0 auto;
+	width: 100%;
+}
+
+.btn-start:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
+	color: white !important;
+	text-decoration: none !important;
+}
+
+.timer-actions {
+	display: flex;
+	gap: 12px;
+	justify-content: center;
+	margin-top: 24px;
+}
+
+.btn-control {
+	padding: 12px 20px;
+	background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+	color: white !important;
+	border: none !important;
+	border-radius: 8px;
+	font-size: 14px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	text-decoration: none !important;
+}
+
+.btn-control:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 12px rgba(59, 130, 246, 0.3);
+	color: white !important;
+	text-decoration: none !important;
+}
+
+.btn-control:disabled {
+	opacity: 0.5 !important;
+	cursor: not-allowed;
+	pointer-events: none !important;
+}
+
+@media (max-width: 768px) {
+	.timer-container {
+		padding: 20px 16px;
+	}
+
+	.timer-card {
+		padding: 24px;
+	}
+
+	.timer-title {
+		font-size: 24px;
+	}
+
+	.timer-display {
+		width: 180px;
+		height: 180px;
+	}
+
+	.timer-text {
+		font-size: 36px;
+	}
+
+	.timer-input-group {
+		flex-direction: column;
+	}
+
+	.timer-input {
+		width: 100%;
+	}
+}

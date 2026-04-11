@@ -7,84 +7,52 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Circular Countdown Timer</title>
-    <style>
-      h1 {
-        color: rgb(0, 0, 0);
-      }
-      .set_budget {
-        width: 350px;
-        margin-top: 50px;
-        align-items: center;
-        padding: 35px;
-        box-shadow: 0 0 15px -10px #2d3748;
-        border-radius: 10px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        height: 500px;
-        background-color: #f7f0f0;
-      }
-
-      #buttons {
-        display: flex;
-        justify-content: space-around;
-        margin-top: 30px;
-      }
-
-      button {
-        padding: 10px;
-        font-size: 1em;
-        cursor: pointer;
-        background-color: #1a365d;
-        border: none;
-        margin-right: 10px;
-        outline: none;
-        border-radius: 5px;
-        color: #fff;
-        font-weight: 600;
-        font-size: 18px;
-        cursor: pointer;
-        transition: all 0.3s;
-      }
-    </style>
+    <title>Meditation Timer</title>
   </head>
   <body>
     <section>
-      <div class="set_budget">
-        <h1 style="font-size: 34px; color: #1a365d">Meditation Timer</h1>
-        <div id="timer-container" style = "position: relative;
-        margin-top: 50px;
-        width: 200px;
-        height: 200px;
-        border-radius: 50%;
-        background-color: #98bbeb;
-        margin-bottom: 20px;
-        overflow: hidden;">
-          <div id="timer" style=" position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          font-size: 2em;
-          color: #333;">00:00</div>
-          <div id="pointer" style="position: absolute;
-          width: 4px;
-          height: 4px;
-          background-color: red;
-          border-radius: 50%;
-          transform-origin: 50% 100%;
-          transform: translate(-50%, -50%) rotate(0deg); /* Updated transform property */
-          z-index: 2; "></div>
-        </div>
-        <div id="buttons">
-          <button onclick="startTimer(5)">5 minutes</button>
-          <button onclick="startTimer(600)">10 minutes</button>
-          <button onclick="startTimer(900)">15 minutes</button>
+      <div class="timer-container">
+        <div class="timer-card">
+          <h1 class="timer-title">Meditation Timer</h1>
+
+          <div class="timer-display">
+            <div class="timer-text" id="timer">00:00</div>
+          </div>
+
+          <p class="timer-prompt">Set your meditation duration</p>
+
+          <div class="timer-input-group">
+            <div>
+              <label class="timer-label">Minutes</label>
+              <input type="number" id="minutes" class="timer-input" min="0" max="59" value="5" placeholder="0">
+            </div>
+            <div>
+              <label class="timer-label">Seconds</label>
+              <input type="number" id="seconds" class="timer-input" min="0" max="59" value="0" placeholder="0">
+            </div>
+          </div>
+
+          <button class="btn-start" id="startBtn" onclick="startCustomTimer()">
+            <i class="fas fa-play"></i> 
+            <span>Start Meditation</span>
+          </button>
+
+          <div class="timer-actions">
+            <button class="btn-control" id="pauseBtn" onclick="pauseTimer()" style="display:none;">
+              <i class="fas fa-pause"></i> Pause
+            </button>
+            <button class="btn-control" id="resumeBtn" onclick="resumeTimer()" style="display:none;">
+              <i class="fas fa-play"></i> Resume
+            </button>
+            <button class="btn-control" id="stopBtn" onclick="stopTimer()" style="display:none;">
+              <i class="fas fa-stop"></i> Stop
+            </button>
+          </div>
         </div>
       </div>
-      <audio id="ringSound" src="./ring.mp3" type="audio/mp3"></audio>
+
+      <audio id="ringSound" th:src="@{/ring.mp3}" type="audio/mp3"></audio>
       <script th:src="@{/js/timer.js}"></script>
     </section>
-    
   </body>
 </html>

@@ -3,42 +3,200 @@
 	th:replace="user/base::layout(~{::section})">
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Edit Note</title>
+<style>
+	.edit-note-container {
+		max-width: 800px;
+		margin: 0 auto;
+		padding: 40px 24px;
+	}
+
+	.edit-note-header {
+		margin-bottom: 32px;
+	}
+
+	.edit-note-title {
+		font-size: 32px;
+		font-weight: 800;
+		color: #0f172a;
+		margin-bottom: 8px;
+	}
+
+	.edit-note-subtitle {
+		font-size: 14px;
+		color: #6b7280;
+	}
+
+	.form-card {
+		background: white;
+		border-radius: 12px;
+		padding: 32px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+		border: 1px solid #f0f0f0;
+	}
+
+	.form-group {
+		margin-bottom: 24px;
+	}
+
+	.form-group:last-child {
+		margin-bottom: 0;
+	}
+
+	.form-label {
+		display: block;
+		font-size: 14px;
+		font-weight: 600;
+		color: #1f2937;
+		margin-bottom: 8px;
+	}
+
+	.form-control {
+		width: 100%;
+		padding: 12px 16px;
+		border: 1.5px solid #e5e7eb;
+		border-radius: 8px;
+		font-size: 14px;
+		font-family: inherit;
+		background-color: #f9fafb;
+		transition: all 0.3s ease;
+		color: #1f2937;
+	}
+
+	.form-control::placeholder {
+		color: #9ca3af;
+	}
+
+	.form-control:focus {
+		outline: none;
+		border-color: #3b82f6;
+		background-color: white;
+		box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+	}
+
+	textarea.form-control {
+		resize: vertical;
+		min-height: 200px;
+	}
+
+	.form-actions {
+		display: flex;
+		gap: 12px;
+		margin-top: 32px;
+	}
+
+	.btn-submit {
+		flex: 1;
+		padding: 12px 24px;
+		background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
+		color: white;
+		border: none;
+		border-radius: 8px;
+		font-size: 15px;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+	}
+
+	.btn-submit:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
+	}
+
+	.btn-cancel {
+		flex: 1;
+		padding: 12px 24px;
+		background-color: #f3f4f6;
+		color: #6b7280;
+		border: 1.5px solid #e5e7eb;
+		border-radius: 8px;
+		font-size: 15px;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+		text-decoration: none;
+	}
+
+	.btn-cancel:hover {
+		background-color: #e5e7eb;
+		color: #1f2937;
+	}
+
+	@media (max-width: 768px) {
+		.edit-note-container {
+			padding: 20px 16px;
+		}
+
+		.form-card {
+			padding: 20px;
+		}
+
+		.edit-note-title {
+			font-size: 24px;
+		}
+
+		.form-actions {
+			flex-direction: column;
+		}
+	}
+</style>
 </head>
 <body>
-<section>
-		<div class="container-fluid p-3 mt-3">
-			<div class="col-md-10 offset-md-1">
-				<div class="card paint-card">
-					<h1 class="text-center text-success"><span style="font-family: 'Monotype Corsiva';">Edit Notes</span></h1>
-					<hr>
-					<!-- <div th:if="${session.message}"
-						th:classappend="${session.message.type}" class="text-center"
-						role="alert">
-
-						<h4 th:text="${session.message.content}"></h4>
-						<th:block th:text="${#session.removeAttribute('message')}"></th:block>
-					</div> -->
-					<div class="card-body">
-						<form th:action="@{/user/updateNotes}"  method="post">
-							<div class="form-group">
-								<label>Enter Title</label> <input type="text" th:value="${notes.title}"
-									class="form-control" name="title">
-							</div><br>
-							<div class="form-group">
-								<label>Enter Description</label>
-								<textarea rows="12" cols="" name="content" th:value="${notes.content}"
-									class="form-control">[[${notes.content}]]</textarea>
-							</div>
-							<input type="hidden" th:value="${notes.id}" name="id">
-							
-							<div class="text-center mt-3">
-								<button class="btn btn-primary">Update <i class="fas fa-save"></i></button>
-							</div>
-						</form>
-					</div>
-				</div>
+	<section>
+		<div class="edit-note-container">
+			<div class="edit-note-header">
+				<h1 class="edit-note-title">Edit Note</h1>
+				<p class="edit-note-subtitle">Update your thoughts and reflections</p>
 			</div>
+
+			<form th:action="@{/user/updateNotes}" method="post" class="form-card">
+				<!-- Title -->
+				<div class="form-group">
+					<label for="title" class="form-label">Note Title</label>
+					<input 
+						type="text"
+						id="title"
+						name="title"
+						class="form-control"
+						th:value="${notes.title}"
+						placeholder="Note title"
+						required>
+				</div>
+
+				<!-- Content -->
+				<div class="form-group">
+					<label for="content" class="form-label">Description</label>
+					<textarea
+						id="content"
+						name="content"
+						class="form-control"
+						placeholder="Write your thoughts, feelings, and reflections here..."
+						required>[[${notes.content}]]</textarea>
+				</div>
+
+				<!-- Hidden ID -->
+				<input type="hidden" name="id" th:value="${notes.id}">
+
+				<!-- Actions -->
+				<div class="form-actions">
+					<button type="submit" class="btn-submit">
+						<i class="fas fa-save"></i>
+						<span>Update Note</span>
+					</button>
+					<a th:href="@{/user/viewNotes/0}" class="btn-cancel">
+						<i class="fas fa-arrow-left"></i>
+						<span>Cancel</span>
+					</a>
+				</div>
+			</form>
 		</div>
 	</section>
 </body>

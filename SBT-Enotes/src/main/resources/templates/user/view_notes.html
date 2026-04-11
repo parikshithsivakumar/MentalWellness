@@ -3,87 +3,85 @@
 	th:replace="user/base::layout(~{::section})">
 <head>
 <meta charset="ISO-8859-1">
-<title>View Notes</title>
+<title>Notes</title>
 </head>
 <body>
 	<section>
-		<div class="container mt-5">
-			<h1 class="text-center text-success"><span style="font-family:Poppins, sans-serif; color: #1a365d; font-weight: 600; font-size: 34px;">View Journal </span></h1>
-			<hr>
-			 <div th:if="${session.msg}"
-				 class="text-center"
-				role="alert">
+		<div class="notes-container">
+			<div class="notes-header">
+				<h1 class="notes-title">Notes</h1>
+				<a th:href="@{/user/addNotes}" class="btn-add-note">
+					<i class="fas fa-plus"></i>
+					<span>Add Note</span>
+				</a>
+			</div>
 
-				<h4 th:text="${session.msg}"></h4>
+			<!-- Alert Message -->
+			<div th:if="${session.msg}" class="alert-box">
+				<th:block th:text="${session.msg}"></th:block>
 				<th:block th:text="${#session.removeAttribute('msg')}"></th:block>
-			</div> 
+			</div>
 
-			<div class="col-md-12 mt-3" th:each="n:${Notes}">
-				<div class="card paint-card" style="background-color:#d4d0d0 ; box-shadow: 0 0 15px -10px #2d3748; padding: 10px;">
-					<div class="card-body">
-						<div class="text-center">
-							<img alt="" th:src="@{/img/paper.jpg}"
-								style="width: 75px; height: 75px; border-radius: 5px;">
-						</div>
+			<!-- Search Bar -->
+			<div class="search-bar">
+				<input type="text" class="search-input" placeholder="Search title, content, tags..." id="noteSearch">
+			</div>
 
-						<h5 style="color: #1a365d;">[[${n.title}]]</h5>
-						
-						  <p style="color: #1a365d;">
-							[[${n.content}]] <br> <br> 
-							
-							
-
-						</p>
-						
-						<div class="text-center" >
-							<a th:href="@{'/user/editNotes/'+${n.id}}" class="btn  btn-sm ml-2" style="background-color:#1a365d;
-							color: #fff;"><i class="fas fa-pen-to-square"></i> Edit</a>
-							
-							 <a
-								th:href="@{'/user/deleteNotes/'+${n.id}}" class="btn  btn-sm ml-2" style="background-color:#1a365d;
-								color: #fff;"><i class="fas fa-trash"></i> Delete</a>
-						</div>
+			<!-- Notes Grid -->
+		<div class="notes-grid" th:if="${!Notes.isEmpty()}">
+			<div class="note-card" th:each="n:${Notes}">
+					<h5 class="note-title" th:text="${n.title}"></h5>
+					<p class="note-content" th:text="${n.content}"></p>
+					<div class="note-actions">
+						<a th:href="@{'/user/editNotes/'+${n.id}}" class="btn-action btn-edit">
+							<i class="fas fa-edit"></i>
+							<span>Edit</span>
+						</a>
+						<a th:href="@{'/user/deleteNotes/'+${n.id}}" class="btn-action btn-delete" onclick="return confirm('Are you sure?')">
+							<i class="fas fa-trash"></i>
+							<span>Delete</span>
+						</a>
 					</div>
 				</div>
 			</div>
 
-
-
-
-			<div class="row p-4">
-				<div class="col-md-4">Total Elements : [[${totalElement}]]</div>
-				<div class="col-md-6">
-					<nav aria-label="Page navigation example">
-						<ul class="pagination" >
-							
-							<li th:classappend="${pageNo==0} ? 'disabled':'' " class="page-item">
-							<a class="page-link" th:href="@{'/user/viewNotes/'+${pageNo-1} }"
-							
-								aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-							</a>
-							
-							</li>
-							
-							
-							<li th:each="i:${#numbers.sequence(1,totalPage)}" th:classappend="${pageNo+1==i}?'active':''" class="page-item" >
-							
-							<a th:href="@{'/user/viewNotes/' +${i-1} }" class="page-link" href="#" style="background-color: #1a365d;">[[${i}]]</a>
-							
-							</li>
-							
-							<li th:classapppend="${pageNo+1==totalPage} ? 'disabled' :  '' " class="page-item">
-							<a class="page-link" th:href="@{'/user/viewNotes/'+${pageNo+1}}"
-								aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-							</a>
-							</li>
-							
-						</ul>
-					</nav>
+			<!-- Empty State -->
+		<div th:if="${Notes.isEmpty()}" class="empty-state">
+				<div class="empty-state-icon">
+					<i class="fas fa-sticky-note"></i>
 				</div>
+				<p class="empty-state-text">No notes yet. Create your first note to get started!</p>
 			</div>
 
-		</div>
+			<!-- Pagination -->
+			<div class="pagination-container" th:if="${totalPage > 1}">
+				<a th:if="${pageNo > 0}" th:href="@{'/user/viewNotes/' + ${pageNo-1}}" class="pagination-btn">
+					<i class="fas fa-chevron-left"></i>
+				</a>
 
+				<a th:each="i:${#numbers.sequence(1,totalPage)}" 
+					th:href="@{'/user/viewNotes/' + ${i-1}}"
+					th:classappend="${pageNo+1==i} ? 'active' : ''"
+					class="pagination-btn"
+					th:text="${i}"></a>
+
+				<a th:if="${pageNo+1 < totalPage}" th:href="@{'/user/viewNotes/' + ${pageNo+1}}" class="pagination-btn">
+					<i class="fas fa-chevron-right"></i>
+				</a>
+			</div>
+		</div>
 	</section>
+
+	<script>
+		// Note search functionality
+		document.getElementById('noteSearch').addEventListener('keyup', function(e) {
+			const searchTerm = e.target.value.toLowerCase();
+			document.querySelectorAll('.note-card').forEach(card => {
+				const title = card.querySelector('.note-title').textContent.toLowerCase();
+				const content = card.querySelector('.note-content').textContent.toLowerCase();
+				card.style.display = (title.includes(searchTerm) || content.includes(searchTerm)) ? 'block' : 'none';
+			});
+		});
+	</script>
 </body>
 </html>

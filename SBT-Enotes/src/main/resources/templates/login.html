@@ -3,7 +3,8 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Mental Wellness - Login</title>
+	<title>Mental Wellness - Authentication</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 	<style>
 		* {
 			margin: 0;
@@ -15,51 +16,173 @@
 			height: 100%;
 			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 			background: linear-gradient(135deg, #cfe7f3 0%, #d4f1d4 100%);
+		}
+
+		.container {
+			display: flex;
+			height: 100vh;
+			gap: 0;
+		}
+
+		/* Left Section - Landing */
+		.landing-section {
+			flex: 1;
+			padding: 60px 50px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			color: #1f2937;
+		}
+
+		.logo {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			margin-bottom: 60px;
+			font-size: 24px;
+			font-weight: 700;
+		}
+
+		.logo-circle {
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			background: linear-gradient(135deg, #14b8a6 0%, #10b981 100%);
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			min-height: 100vh;
-			padding: 20px;
+			color: white;
+			font-weight: bold;
 		}
 
-		.login-container {
+		.tagline {
+			font-size: 48px;
+			font-weight: 800;
+			line-height: 1.2;
+			margin-bottom: 50px;
+			color: #0f172a;
+			letter-spacing: -0.5px;
+		}
+
+		.about-section {
+			background: white;
+			padding: 30px;
+			border-radius: 12px;
+			margin-bottom: 30px;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+		}
+
+		.about-title {
+			font-size: 20px;
+			font-weight: 700;
+			color: #0f172a;
+			margin-bottom: 12px;
+		}
+
+		.about-text {
+			font-size: 14px;
+			line-height: 1.6;
+			color: #6b7280;
+		}
+
+		.problem-section {
+			background: white;
+			padding: 30px;
+			border-radius: 12px;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+		}
+
+		.problem-title {
+			font-size: 20px;
+			font-weight: 700;
+			color: #0f172a;
+			margin-bottom: 12px;
+		}
+
+		.problem-text {
+			font-size: 14px;
+			line-height: 1.6;
+			color: #6b7280;
+		}
+
+		/* Right Section - Auth */
+		.auth-section {
+			flex: 1;
+			padding: 50px 40px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: white;
+		}
+
+		.auth-container {
 			width: 100%;
 			max-width: 450px;
-			background: white;
-			border-radius: 16px;
-			box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
-			padding: 48px 40px;
-			animation: slideUp 0.5s ease-out;
 		}
 
-		@keyframes slideUp {
+		.auth-header {
+			margin-bottom: 24px;
+		}
+
+		.auth-label {
+			font-size: 12px;
+			font-weight: 600;
+			color: #3b82f6;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			display: block;
+			margin-bottom: 6px;
+		}
+
+		.auth-title {
+			font-size: 32px;
+			font-weight: 800;
+			color: #0f172a;
+			margin-bottom: 24px;
+		}
+
+		.tab-group {
+			display: flex;
+			gap: 0;
+			margin-bottom: 24px;
+			border-bottom: 2px solid #e5e7eb;
+		}
+
+		.tab {
+			flex: 1;
+			padding: 14px 0;
+			text-align: center;
+			font-size: 15px;
+			font-weight: 600;
+			color: #9ca3af;
+			border-bottom: 3px solid transparent;
+			cursor: pointer;
+			transition: all 0.3s ease;
+		}
+
+		.tab.active {
+			color: #0f172a;
+			border-bottom-color: #3b82f6;
+		}
+
+		.tab-content {
+			display: none;
+		}
+
+		.tab-content.active {
+			display: block;
+			animation: fadeIn 0.3s ease-out;
+		}
+
+		@keyframes fadeIn {
 			from {
 				opacity: 0;
-				transform: translateY(30px);
+				transform: translateY(-10px);
 			}
 			to {
 				opacity: 1;
 				transform: translateY(0);
 			}
-		}
-
-		.form-header {
-			text-align: center;
-			margin-bottom: 32px;
-		}
-
-		.form-title {
-			font-size: 28px;
-			font-weight: 700;
-			color: #1f2937;
-			margin-bottom: 8px;
-			letter-spacing: -0.5px;
-		}
-
-		.form-subtitle {
-			font-size: 15px;
-			color: #6b7280;
-			font-weight: 400;
 		}
 
 		/* Alerts */
@@ -96,9 +219,9 @@
 			border-left-color: #10b981;
 		}
 
-		/* Form Elements */
+		/* Form */
 		.form-group {
-			margin-bottom: 20px;
+			margin-bottom: 18px;
 		}
 
 		.form-label {
@@ -118,7 +241,7 @@
 		.form-control {
 			width: 100%;
 			padding: 11px 14px;
-			padding-left: 38px;
+			padding-left: 36px;
 			font-size: 14px;
 			border: 1.5px solid #e5e7eb;
 			border-radius: 8px;
@@ -142,7 +265,7 @@
 		.input-icon {
 			position: absolute;
 			left: 12px;
-			font-size: 16px;
+			font-size: 18px;
 			color: #9ca3af;
 			pointer-events: none;
 		}
@@ -163,6 +286,26 @@
 			color: #6b7280;
 		}
 
+		.checkbox-group {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			margin: 16px 0 24px 0;
+		}
+
+		.checkbox {
+			width: 18px;
+			height: 18px;
+			cursor: pointer;
+			accent-color: #3b82f6;
+		}
+
+		.checkbox-label {
+			font-size: 13px;
+			color: #6b7280;
+			cursor: pointer;
+		}
+
 		/* Buttons */
 		.btn-submit {
 			width: 100%;
@@ -173,7 +316,7 @@
 			border-radius: 8px;
 			cursor: pointer;
 			transition: all 0.3s ease;
-			background: linear-gradient(135deg, #2563eb 0%, #10b981 100%);
+			background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
 			color: white;
 			margin-top: 4px;
 			margin-bottom: 16px;
@@ -181,7 +324,7 @@
 
 		.btn-submit:hover {
 			transform: translateY(-2px);
-			box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+			box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
 		}
 
 		.btn-submit:active {
@@ -193,7 +336,6 @@
 			cursor: not-allowed;
 		}
 
-		/* Sign Up Link */
 		.signup-link {
 			text-align: center;
 			font-size: 14px;
@@ -205,6 +347,7 @@
 			text-decoration: none;
 			font-weight: 600;
 			transition: color 0.2s ease;
+			cursor: pointer;
 		}
 
 		.signup-link a:hover {
@@ -212,23 +355,90 @@
 			text-decoration: underline;
 		}
 
-		/* Responsive Design */
-		@media (max-width: 480px) {
-			.login-container {
-				padding: 32px 24px;
+		/* Responsive */
+		@media (max-width: 1024px) {
+			.container {
+				flex-direction: column;
 			}
 
-			.form-title {
+			.landing-section {
+				padding: 40px 30px;
+			}
+
+			.tagline {
+				font-size: 36px;
+			}
+
+			.auth-section {
+				padding: 30px 20px;
+				min-height: auto;
+			}
+		}
+
+		@media (max-width: 768px) {
+			.landing-section {
+				padding: 30px 20px;
+			}
+
+			.tagline {
+				font-size: 28px;
+				margin-bottom: 30px;
+			}
+
+			.about-section,
+			.problem-section {
+				padding: 20px;
+			}
+
+			.about-title,
+			.problem-title {
+				font-size: 16px;
+			}
+
+			.about-text,
+			.problem-text {
+				font-size: 13px;
+			}
+
+			.auth-section {
+				padding: 20px;
+			}
+
+			.auth-title {
 				font-size: 24px;
 			}
+		}
 
-			.form-subtitle {
-				font-size: 14px;
+		@media (max-width: 480px) {
+			.landing-section {
+				padding: 20px;
+			}
+
+			.logo {
+				margin-bottom: 30px;
+			}
+
+			.tagline {
+				font-size: 24px;
+				margin-bottom: 20px;
+			}
+
+			.about-section,
+			.problem-section {
+				display: none;
+			}
+
+			.auth-section {
+				padding: 20px;
+			}
+
+			.auth-title {
+				font-size: 20px;
 			}
 
 			.form-control {
 				padding: 10px 12px;
-				padding-left: 34px;
+				padding-left: 32px;
 				font-size: 13px;
 			}
 
@@ -237,110 +447,209 @@
 				font-size: 14px;
 			}
 		}
-
-		@media (max-width: 360px) {
-			.login-container {
-				padding: 24px 20px;
-			}
-
-			.form-header {
-				margin-bottom: 24px;
-			}
-
-			.form-title {
-				font-size: 20px;
-			}
-
-			.form-label {
-				font-size: 12px;
-			}
-
-			.form-control {
-				padding: 9px 11px;
-				padding-left: 32px;
-				font-size: 13px;
-			}
-		}
 	</style>
 </head>
 <body>
-	<div class="login-container">
-		<div class="form-header">
-			<h1 class="form-title">Welcome back</h1>
-			<p class="form-subtitle">Sign in to continue your wellness journey.</p>
+	<div class="container">
+		<!-- Left Section -->
+		<div class="landing-section">
+			<div class="logo">
+				<div class="logo-circle">W</div>
+				<span>WellNest</span>
+			</div>
+
+			<h1 class="tagline">Your personal space for mental clarity, mindfulness, and growth.</h1>
+
+			<div class="about-section">
+				<h3 class="about-title">About</h3>
+				<p class="about-text">WellNest is a modern mental wellness platform designed to help individuals manage their thoughts, track emotional well-being, and build healthier habits.</p>
+				<p class="about-text" style="margin-top: 12px;">It combines journaling, self-assessment, and mindfulness tools into a single seamless experience - empowering users to reflect, relax, and grow.</p>
+			</div>
+
+			<div class="problem-section">
+				<h3 class="problem-title">What Problem It Solves</h3>
+				<p class="problem-text">In today's fast-paced world, mental wellness is often overlooked. WellNest provides accessible tools and insights to help you prioritize your mental health and emotional growth.</p>
+			</div>
 		</div>
 
-		<form class="form-signin" method="post" th:action="@{/login}">
-			<!-- Error Alert -->
-			<div th:if="${param.error}" class="alert alert-danger" role="alert">
-				<strong>Login Failed</strong> — Invalid email or password. Please try again.
-			</div>
+		<!-- Right Section -->
+		<div class="auth-section">
+			<div class="auth-container">
+				<div class="auth-header">
+					<span class="auth-label">Authentication</span>
+					<h2 class="auth-title">Welcome back</h2>
+				</div>
 
-			<!-- Logout Success Alert -->
-			<div th:if="${param.logout}" class="alert alert-success" role="alert">
-				<strong>Logged Out Successfully</strong> — See you again soon!
-			</div>
+				<!-- Tab Group -->
+				<div class="tab-group">
+					<div class="tab active" onclick="switchTab('login', this)">Login</div>
+					<div class="tab" onclick="switchTab('signup', this)">Register</div>
+				</div>
 
-			<!-- Email Input -->
-			<div class="form-group">
-				<label for="username" class="form-label">Email</label>
-				<div class="input-group">
-					<span class="input-icon">✉️</span>
-					<input 
-						type="email" 
-						id="username"
-						name="username" 
-						class="form-control" 
-						placeholder="your@email.com" 
-						required 
-						autofocus
-						aria-label="Email Address">
+				<!-- Login Form -->
+				<div id="login" class="tab-content active">
+					<form method="post" th:action="@{/login}">
+						<!-- Error Alert -->
+						<div th:if="${param.error}" class="alert alert-danger" role="alert">
+							<strong>Login Failed</strong> — Invalid email or password. Please try again.
+						</div>
+
+						<!-- Logout Alert -->
+						<div th:if="${param.logout}" class="alert alert-success" role="alert">
+							<strong>Logged Out Successfully</strong>
+						</div>
+
+						<!-- Email -->
+						<div class="form-group">
+							<label for="login-email" class="form-label">Email</label>
+							<div class="input-group">
+								<i class="fas fa-envelope input-icon"></i>
+								<input 
+									type="email" 
+									id="login-email"
+									name="username" 
+									class="form-control" 
+									placeholder="Enter your email address" 
+									required 
+									autofocus>
+							</div>
+						</div>
+
+						<!-- Password -->
+						<div class="form-group">
+							<label for="login-password" class="form-label">Password</label>
+							<div class="input-group">
+								<i class="fas fa-lock input-icon"></i>
+								<input 
+									type="password" 
+									id="login-password"
+									name="password" 
+									class="form-control" 
+									placeholder="••••••••" 
+									required>
+								<button type="button" class="password-toggle" onclick="togglePassword('login-password')"><i class="fas fa-eye"></i></button>
+							</div>
+						</div>
+
+						<!-- Remember Me -->
+						<div class="checkbox-group">
+							<input type="checkbox" id="remember" class="checkbox" name="remember-me">
+							<label for="remember" class="checkbox-label">Remember me</label>
+						</div>
+
+						<!-- Submit -->
+						<button type="submit" class="btn-submit">Sign in</button>
+
+						<!-- Switch to Signup -->
+						<div class="signup-link">
+							Don't have an account? <a onclick="switchTab('signup', document.querySelectorAll('.tab')[1])">Create one</a>
+						</div>
+					</form>
+				</div>
+
+				<!-- Signup Form -->
+				<div id="signup" class="tab-content">
+					<form th:action="@{/saveUser}" method="POST">
+						<!-- Success Alert -->
+						<div th:if="${session.msg}" class="alert alert-success" role="alert">
+							<strong>Registration Successful!</strong> 
+							<span th:text="${session.msg}"></span>
+							<th:block th:text="${#session.removeAttribute('msg')}"></th:block>
+						</div>
+
+						<!-- Name -->
+						<div class="form-group">
+							<label for="signup-name" class="form-label">Full Name</label>
+							<div class="input-group">
+								<i class="fas fa-user input-icon"></i>
+								<input 
+									type="text" 
+									id="signup-name"
+									name="name"
+									class="form-control" 
+									placeholder="John Doe" 
+									required>
+							</div>
+						</div>
+
+						<!-- Email -->
+						<div class="form-group">
+							<label for="signup-email" class="form-label">Email Address</label>
+							<div class="input-group">
+								<span class="input-icon">@</span>
+								<input 
+									type="email" 
+									id="signup-email"
+									name="email"
+									class="form-control" 
+									placeholder="your@email.com" 
+									required>
+							</div>
+						</div>
+
+						<!-- Password -->
+						<div class="form-group">
+							<label for="signup-password" class="form-label">Password</label>
+							<div class="input-group">
+								<i class="fas fa-lock input-icon"></i>
+								<input 
+									type="password"
+									id="signup-password"
+									name="password" 
+									class="form-control" 
+									placeholder="Create a strong password" 
+									required>
+								<button type="button" class="password-toggle" onclick="togglePassword('signup-password')"><i class="fas fa-eye"></i></button>
+							</div>
+						</div>
+
+						<!-- About -->
+						<div class="form-group">
+							<label for="signup-about" class="form-label">About You (Optional)</label>
+							<textarea 
+								id="signup-about"
+								name="about"
+								class="form-control"
+								placeholder="Tell us about your wellness goals..."
+								style="padding: 11px 14px; resize: vertical; min-height: 80px; font-family: inherit;"></textarea>
+						</div>
+
+						<!-- Submit -->
+						<button type="submit" class="btn-submit">Create Account</button>
+
+						<!-- Switch to Login -->
+						<div class="signup-link">
+							Already have an account? <a onclick="switchTab('login', document.querySelectorAll('.tab')[0])">Sign in</a>
+						</div>
+					</form>
 				</div>
 			</div>
-
-			<!-- Password Input -->
-			<div class="form-group">
-				<label for="password" class="form-label">Password</label>
-				<div class="input-group">
-					<span class="input-icon">🔒</span>
-					<input 
-						type="password" 
-						id="password"
-						name="password" 
-						class="form-control" 
-						placeholder="Enter your password" 
-						required
-						aria-label="Password">
-					<button type="button" class="password-toggle" onclick="togglePassword()" aria-label="Toggle password visibility">👁️</button>
-				</div>
-			</div>
-
-			<!-- Submit Button -->
-			<button 
-				class="btn-submit" 
-				type="submit"
-				aria-label="Sign in to your account">
-				➜ Sign in
-			</button>
-
-			<!-- Sign Up Link -->
-			<div class="signup-link">
-				No account? <a href="/signup">Register →</a>
-			</div>
-		</form>
+		</div>
 	</div>
 
 	<script>
-		function togglePassword() {
-			const passwordField = document.getElementById('password');
-			const toggleBtn = document.querySelector('.password-toggle');
+		function switchTab(tabName, element) {
+			// Hide all tab contents
+			document.querySelectorAll('.tab-content').forEach(tab => {
+				tab.classList.remove('active');
+			});
 			
-			if (passwordField.type === 'password') {
-				passwordField.type = 'text';
-				toggleBtn.textContent = '🙈';
+			// Remove active class from all tabs
+			document.querySelectorAll('.tab').forEach(tab => {
+				tab.classList.remove('active');
+			});
+			
+			// Show selected tab content
+			document.getElementById(tabName).classList.add('active');
+			element.classList.add('active');
+		}
+
+		function togglePassword(fieldId) {
+			const field = document.getElementById(fieldId);
+			if (field.type === 'password') {
+				field.type = 'text';
 			} else {
-				passwordField.type = 'password';
-				toggleBtn.textContent = '👁️';
+				field.type = 'password';
 			}
 		}
 	</script>

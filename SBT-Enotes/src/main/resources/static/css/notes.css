@@ -1,0 +1,245 @@
+/* Notes Page Styles */
+
+section {
+	background-color: #f0f8ff !important;
+	min-height: calc(100vh - 80px);
+	padding: 0 !important;
+	margin: 0 !important;
+}
+
+.notes-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 40px 24px;
+}
+
+.notes-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 32px;
+}
+
+.notes-title {
+	font-size: 32px;
+	font-weight: 800;
+	color: #0f172a;
+	margin: 0;
+}
+
+.btn-add-note {
+	background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%) !important;
+	color: white !important;
+	border: none !important;
+	padding: 12px 24px;
+	border-radius: 8px;
+	font-size: 14px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	text-decoration: none !important;
+	display: inline-flex !important;
+	align-items: center;
+	gap: 8px;
+}
+
+.btn-add-note:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3) !important;
+	color: white !important;
+	text-decoration: none !important;
+}
+
+.search-bar {
+	background: white !important;
+	padding: 20px;
+	border-radius: 12px;
+	margin-bottom: 24px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+	border: 1px solid #e5e7eb !important;
+}
+
+.search-input {
+	width: 100%;
+	padding: 12px 16px;
+	border: 1.5px solid #e5e7eb !important;
+	border-radius: 8px;
+	font-size: 14px;
+	transition: all 0.3s ease;
+	background-color: #f9fafb !important;
+	color: #0f172a;
+}
+
+.search-input:focus {
+	outline: none !important;
+	border-color: #3b82f6 !important;
+	box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+	background-color: white !important;
+}
+
+.notes-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+	gap: 24px;
+	margin-bottom: 32px;
+}
+
+.note-card {
+	background: white !important;
+	border-radius: 12px;
+	padding: 24px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+	border: 1px solid #e5e7eb !important;
+	transition: all 0.3s ease;
+	display: flex;
+	flex-direction: column;
+}
+
+.note-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+.note-title {
+	font-size: 18px;
+	font-weight: 700;
+	color: #0f172a;
+	margin-bottom: 12px;
+	margin-top: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.note-content {
+	font-size: 14px;
+	color: #6b7280;
+	line-height: 1.6;
+	margin-bottom: 16px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	flex-grow: 1;
+}
+
+.note-actions {
+	display: flex;
+	gap: 8px;
+	margin-top: auto;
+}
+
+.btn-action {
+	flex: 1;
+	padding: 10px 12px;
+	border: none !important;
+	border-radius: 6px;
+	font-size: 13px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	text-decoration: none !important;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+}
+
+.btn-edit {
+	background-color: #dbeafe !important;
+	color: #3b82f6 !important;
+}
+
+.btn-edit:hover {
+	background-color: #bfdbfe !important;
+	transform: translateY(-1px);
+}
+
+.btn-delete {
+	background-color: #fee2e2 !important;
+	color: #dc2626 !important;
+}
+
+.btn-delete:hover {
+	background-color: #fecaca !important;
+	transform: translateY(-1px);
+}
+
+.alert-box {
+	background-color: #dcfce7 !important;
+	color: #065f46 !important;
+	padding: 16px;
+	border-radius: 8px;
+	margin-bottom: 24px;
+	border-left: 4px solid #10b981;
+}
+
+.pagination-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 8px;
+	margin-top: 32px;
+}
+
+.pagination-btn {
+	padding: 8px 12px;
+	border: 1.5px solid #e5e7eb !important;
+	background: white !important;
+	border-radius: 6px;
+	cursor: pointer;
+	font-size: 14px;
+	transition: all 0.3s ease;
+	text-decoration: none !important;
+	color: #1f2937 !important;
+}
+
+.pagination-btn:hover:not(:disabled) {
+	border-color: #3b82f6 !important;
+	color: #3b82f6 !important;
+}
+
+.pagination-btn.active {
+	background: #3b82f6 !important;
+	color: white !important;
+	border-color: #3b82f6 !important;
+}
+
+.pagination-btn:disabled {
+	opacity: 0.5 !important;
+	cursor: not-allowed;
+}
+
+.empty-state {
+	text-align: center;
+	padding: 60px 20px;
+	color: #9ca3af;
+}
+
+.empty-state-icon {
+	font-size: 48px;
+	color: #d1d5db;
+	margin-bottom: 16px;
+}
+
+.empty-state-text {
+	font-size: 16px;
+	color: #6b7280;
+}
+
+@media (max-width: 768px) {
+	.notes-container {
+		padding: 20px 16px;
+	}
+
+	.notes-header {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 16px;
+	}
+
+	.notes-grid {
+		grid-template-columns: 1fr;
+	}
+}
