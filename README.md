@@ -56,7 +56,7 @@
 ![Breathing Box](MentalWellness%20SS/BreathBox.png)
 
 ### Wellness Questionnaire
-![Questionnaire](MentalWellness%20SS/guestinire.png)
+![Questionnaire](MentalWellness%20SS/qouestinire.png)
 
 ### Notes Management
 ![Notes](MentalWellness%20SS/Notes.png)
