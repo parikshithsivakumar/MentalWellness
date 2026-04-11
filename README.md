@@ -41,6 +41,31 @@
 
 ---
 
+## 📸 UI Screenshots
+
+### Dashboard Overview
+![Dashboard](MentalWellness%20SS/Dashboard.png)
+
+### Wordle Challenge Game
+![Wordle Game](MentalWellness%20SS/wordle.png)
+
+### Meditation Timer
+![Meditation Timer](MentalWellness%20SS/Timer.png)
+
+### Breathing Box Exercise
+![Breathing Box](MentalWellness%20SS/BreathBox.png)
+
+### Wellness Questionnaire
+![Questionnaire](MentalWellness%20SS/guestinire.png)
+
+### Notes Management
+![Notes](MentalWellness%20SS/Notes.png)
+
+### Add Notes Interface
+![Add Notes](MentalWellness%20SS/Addnotes.png)
+
+---
+
 ## 🏗️ Technical Architecture
 
 ### Backend Stack
